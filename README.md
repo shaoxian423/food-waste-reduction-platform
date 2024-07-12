@@ -1,4 +1,3 @@
-
 # food-waste-reduction-platform
 AlgonquinCollege Group 8
 
@@ -34,6 +33,37 @@ This project aims to create a platform to reduce food waste by connecting food r
 - Maven
 
 ### Installation
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/yourusername/food-waste-reduction-platform.git
+1. **Clone the repository:**
+   - Open a terminal or command prompt.
+   - Run the following command to clone the repository:
+     ```sh
+     git clone https://github.com/johnDoe/food-waste-reduction-platform.git
+     ```
+
+2. **Navigate to the project directory:**
+   - After cloning the repository, navigate to the project directory:
+     ```sh
+     cd food-waste-reduction-platform
+     ```
+
+3. **Build the project using Maven:**
+   - Run the following command to build the project:
+     ```sh
+     mvn clean install
+     ```
+
+## Running the Application
+1. **Build and run the Docker container:**
+   - Run the following command to start the Docker container:
+     ```sh
+     docker-compose up
+     ```
+
+2. **Access the application:**
+   - Open your web browser and go to `http://localhost:8080`.
+
+## Contributing
+Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
