@@ -37,11 +37,11 @@ This project aims to create a platform to reduce food waste by connecting food r
    - Open a terminal or command prompt.
    - Run the following command to clone the repository:
      ```sh
-     git clone https://github.com/johnDoe/food-waste-reduction-platform.git
+     git clone https://github.com/shaoxian423/food-waste-reduction-platform.git
      ```
 
 2. **Navigate to the project directory:**
-   - After cloning the repository, navigate to the project directory:
+   - After cloning the repository, navigate to the project directorfy:
      ```sh
      cd food-waste-reduction-platform
      ```
