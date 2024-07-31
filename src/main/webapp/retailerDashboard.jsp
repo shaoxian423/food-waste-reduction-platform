@@ -1,89 +1,57 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.duan.fwrp.entity.SurplusFood" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.duan.fwrp.entity.RetailerInventory" %>
+<%@ taglib uri="http://jakarta.apache.org/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+
+
+
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Retailer Dashboard - Food Waste Reduction Platform</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <title>Retailer Dashboard</title>
 </head>
 <body>
-<%-- 顶部导航栏 --%>
-<div class="navbar">
-    <a href="#">About Us</a>
-    <a href="#">About FWRP</a>
-    <div class="navbar-right">
-        <a href="register.jsp">Register</a>
-        <a href="login.jsp">Login</a>
-    </div>
-</div>
+<h1>Retailer Dashboard</h1>
+<form action="AddInventoryServlet" method="post">
+    Retailer ID: <input type="text" name="retailerId"><br>
+    Item Name: <input type="text" name="itemName"><br>
+    Quantity: <input type="text" name="quantity"><br>
+    Expiry Date: <input type="text" name="expiryDate"><br>
+    Price: <input type="text" name="price"><br>
+    Discount Rate: <input type="text" name="discountRate"><br>
+    <input type="submit" value="Add Inventory">
+</form>
 
-<h2>Welcome, Retailer!</h2>
-
-<div class="form-container">
-    <form action="InventoryServlet" method="post">
-        <input type="hidden" name="action" value="addInventory">
-        <label for="id">ID:</label>
-        <input type="text" id="id" name="id"><br>
-
-        <label for="retailerId">Retailer ID:</label>
-        <input type="text" id="retailerId" name="retailerId"><br>
-
-        <label for="itemName">Item Name:</label>
-        <input type="text" id="itemName" name="itemName"><br>
-
-        <label for="quantity">Quantity:</label>
-        <input type="text" id="quantity" name="quantity"><br>
-
-        <label for="expirationDate">Expiration Date:</label>
-        <input type="text" id="expirationDate" name="expirationDate"><br>
-
-        <label for="price">Price:</label>
-        <input type="text" id="price" name="price"><br>
-
-        <label for="discountRate">Discount Rate:</label>
-        <input type="text" id="discountRate" name="discountRate"><br>
-
-        <input type="submit" value="Add Inventory">
-    </form>
-</div>
-
-<h2>Surplus Food Items</h2>
-<table>
-    <thead>
+<h2>Inventory List</h2>
+<table border="1">
     <tr>
         <th>Item Name</th>
         <th>Quantity</th>
-        <th>Expiration Date</th>
+        <th>Expiry Date</th>
         <th>Price</th>
         <th>Discount Rate</th>
         <th>Mark as Surplus</th>
     </tr>
-    </thead>
-    <tbody>
-    <%
-        List<SurplusFood> surplusFoodList = (List<SurplusFood>) request.getAttribute("surplusFoodList");
-        if (surplusFoodList != null) {
-            for (SurplusFood item : surplusFoodList) {
-    %>
-    <tr>
-        <td><%= item.getInventoryId() %></td>
-        <td><%= item.isForSale() %></td>
-        <td><%= item.getDiscountPrice() %></td>
-        <td>
-            <form action="InventoryServlet" method="post">
-                <input type="hidden" name="action" value="markSurplus">
-                <input type="hidden" name="itemId" value="<%= item.getInventoryId() %>">
-                <input type="hidden" name="isForSale" value="true">
-                <input type="hidden" name="discountPrice" value="<%= item.getDiscountPrice() %>">
-                <input type="submit" value="Mark as Surplus">
-            </form>
-        </td>
-    </tr>
-    <%
-            }
-        }
-    %>
-    </tbody>
+    <c:forEach var="item" items="${inventoryList}">
+        <tr>
+            <td>${item.itemName}</td>
+            <td>${item.quantity}</td>
+            <td>${item.expiryDate}</td>
+            <td>${item.price}</td>
+            <td>${item.discountRate}</td>
+            <td>
+                <form action="MarkSurplusServlet" method="post">
+                    <input type="hidden" name="itemId" value="${item.id}">
+                    <input type="submit" value="Mark as Surplus">
+                </form>
+            </td>
+        </tr>
+    </c:forEach>
 </table>
 </body>
 </html>

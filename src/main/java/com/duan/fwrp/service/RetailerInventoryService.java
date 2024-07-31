@@ -1,42 +1,40 @@
 package com.duan.fwrp.service;
 
 import com.duan.fwrp.dao.RetailerInventoryDAO;
-import com.duan.fwrp.dao.SurplusFoodDAO;
 import com.duan.fwrp.entity.RetailerInventory;
-import com.duan.fwrp.entity.SurplusFood;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public class RetailerInventoryService {
-    private RetailerInventoryDAO retailerInventoryDAO = new RetailerInventoryDAO();
-    private SurplusFoodDAO surplusFoodDAO = new SurplusFoodDAO();
+    private RetailerInventoryDAO inventoryDAO;
 
-    public void addInventory(RetailerInventory item) throws SQLException {
-        retailerInventoryDAO.addInventory(item);
-    }
-
-    public void markAsSurplus(int itemId, boolean isForSale, double discountPrice) throws SQLException {
-        surplusFoodDAO.markAsSurplus(itemId, isForSale, discountPrice);
-    }
-
-    public List<RetailerInventory> getAllInventory() throws SQLException {
-        return retailerInventoryDAO.getAllInventory();
-    }
-
-    public void checkAndMarkSurplusItems() throws SQLException {
-        List<RetailerInventory> inventoryList = retailerInventoryDAO.getAllInventory();
-        LocalDate today = LocalDate.now();
-        for (RetailerInventory item : inventoryList) {
-            if (item.getExpireDate().isBefore(today.plusWeeks(1))) {
-                surplusFoodDAO.markAsSurplus(item.getId(), false, item.getPrice() * (1 - item.getDiscountRate() / 100));
-            }
+    public RetailerInventoryService() {
+        try {
+            inventoryDAO = new RetailerInventoryDAO();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to initialize RetailerInventoryDAO", e);
         }
     }
 
-    public List<SurplusFood> getAllSurplusFood() throws SQLException {
-        return surplusFoodDAO.getAllSurplusFood();
+    public void addItem(String retailerId, String itemName, int quantity, String expiryDate, double price, double discountRate) {
+        RetailerInventory item = new RetailerInventory(retailerId, itemName, quantity, expiryDate, price, discountRate);
+        inventoryDAO.save(item);
+    }
+
+    public List<RetailerInventory> getAllItems() {
+        return inventoryDAO.findAll();
+    }
+
+    public List<RetailerInventory> getAllInventories() {
+        return inventoryDAO.getAllRetailerInventories();
+    }
+
+    public void markAsSurplus(String itemId) {
+        RetailerInventory item = inventoryDAO.findById(itemId);
+        if (item != null) {
+            item.setSurplus(true);
+            inventoryDAO.update(item);
+        }
     }
 }
-

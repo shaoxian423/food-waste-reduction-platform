@@ -21,4 +21,29 @@
     <url-pattern>/login</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>MarkSurplusServlet</servlet-name>
+    <servlet-class>com.duan.fwrp.servlet.MarkSurplusServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MarkSurplusServlet</servlet-name>
+    <url-pattern>/MarkSurplusServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AddInventoryServlet</servlet-name>
+    <servlet-class>com.duan.fwrp.servlet.AddInventoryServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddInventoryServlet</servlet-name>
+    <url-pattern>/AddInventoryServlet</url-pattern>
+  </servlet-mapping>
+
+  <jsp-config>
+    <taglib>
+      <taglib-uri>http://jakarta.apache.org/jsp/jstl/core</taglib-uri>
+      <taglib-location>/WEB-INF/lib/jakarta.servlet.jsp.jstl-2.0.0.jar</taglib-location>
+    </taglib>
+  </jsp-config>
+
 </web-app>

@@ -6,34 +6,44 @@ import java.util.ArrayList;
 import java.util.List;
 import com.duan.fwrp.util.DatabaseUtil;
 
-public class SurplusFoodDAO {
-    public void markAsSurplus(int inventoryId, boolean isForSale, double discountPrice) throws SQLException {
-        String query = "INSERT INTO SurplusFood (inventory_id, is_for_sale, discount_price) VALUES (?, ?, ?)";
-        try (Connection conn = DatabaseUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, inventoryId);
-            stmt.setBoolean(2, isForSale);
-            stmt.setDouble(3, discountPrice);
-            stmt.executeUpdate();
-        }
-    }
 
-    public List<SurplusFood> getAllSurplusFood() throws SQLException {
-        List<SurplusFood> surplusFoodList = new ArrayList<>();
-        String query = "SELECT * FROM SurplusFood";
-        try (Connection conn = DatabaseUtil.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                int inventoryId = rs.getInt("inventory_id");
-                boolean isForSale = rs.getBoolean("is_for_sale");
-                double discountPrice = rs.getDouble("discount_price");
-                SurplusFood surplusFood = new SurplusFood(id, inventoryId, isForSale, discountPrice);
-                surplusFoodList.add(surplusFood);
+public class SurplusFoodDAO {
+    public List<SurplusFood> getAllSurplusFoods() {
+        List<SurplusFood> surplusFoods = new ArrayList<>();
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM SurplusFood");
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                SurplusFood food = new SurplusFood();
+                food.setId(resultSet.getInt("id"));
+                food.setInventoryId(resultSet.getInt("inventory_id"));
+                food.setRetailerId(resultSet.getInt("retailer_id"));
+                food.setFoodItem(resultSet.getString("food_item"));
+                food.setQuantity(resultSet.getInt("quantity"));
+                food.setExpireDate(resultSet.getDate("expire_date"));
+                food.setPrice(resultSet.getDouble("price"));
+                food.setDiscountRate(resultSet.getDouble("discount_rate"));
+                food.setIsForSale(resultSet.getBoolean("is_for_sale"));
+                surplusFoods.add(food);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return surplusFoodList;
+        return surplusFoods;
+    }
+    public void markAsSurplus(int inventoryId, boolean isForSale, double discountRate) throws SQLException {
+        String sql = "UPDATE SurplusFood SET is_for_sale = ?, discount_rate = ? WHERE inventory_id = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setBoolean(1, isForSale);
+            statement.setDouble(2, discountRate);
+            statement.setInt(3, inventoryId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Error marking as surplus", e);
+        }
     }
 }
+
 

@@ -1,48 +1,49 @@
 package com.duan.fwrp.entity;
 
-import java.time.LocalDate;
-
 public class RetailerInventory {
-    private int id;
-    private int retailerId;
-    private String name;
+    private String id;
+    private String retailerId;
+    private String itemName;
     private int quantity;
-    private LocalDate expireDate;
+    private String expiryDate;
     private double price;
     private double discountRate;
+    private boolean surplus;
 
-    public RetailerInventory(int id, int retailerId, String name, int quantity, LocalDate expireDate, double price, double discountRate) {
-        this.id = id;
+    // Constructors, getters, and setters
+
+    public RetailerInventory(String retailerId, String itemName, int quantity, String expiryDate, double price, double discountRate) {
         this.retailerId = retailerId;
-        this.name = name;
+        this.itemName = itemName;
         this.quantity = quantity;
-        this.expireDate = expireDate;
+        this.expiryDate = expiryDate;
         this.price = price;
         this.discountRate = discountRate;
+        this.surplus = false;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getRetailerId() {
+    public String getRetailerId() {
         return retailerId;
     }
 
-    public void setRetailerId(int retailerId) {
+    public void setRetailerId(String retailerId) {
         this.retailerId = retailerId;
     }
 
-    public String getName() {
-        return name;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public int getQuantity() {
@@ -53,12 +54,12 @@ public class RetailerInventory {
         this.quantity = quantity;
     }
 
-    public LocalDate getExpireDate() {
-        return expireDate;
+    public String getExpiryDate() {
+        return expiryDate;
     }
 
-    public void setExpireDate(LocalDate expireDate) {
-        this.expireDate = expireDate;
+    public void setExpiryDate(String expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
     public double getPrice() {
@@ -75,5 +76,13 @@ public class RetailerInventory {
 
     public void setDiscountRate(double discountRate) {
         this.discountRate = discountRate;
+    }
+
+    public boolean isSurplus() {
+        return surplus;
+    }
+
+    public void setSurplus(boolean surplus) {
+        this.surplus = surplus;
     }
 }
