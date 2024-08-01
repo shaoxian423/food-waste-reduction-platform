@@ -9,9 +9,15 @@ import java.util.List;
 public class SurplusFoodDAOTest {
     public static void main(String[] args) {
         SurplusFoodDAO surplusFoodDAO = new SurplusFoodDAO();
-        List<SurplusFood> surplusFoodList = surplusFoodDAO.getAllSurplusFoods();
-        for (SurplusFood surplusFood : surplusFoodList) {
-            System.out.println(surplusFood.getInventoryId() + " - " + surplusFood.isForSale());
+        try {
+            List<SurplusFood> surplusFoodList = surplusFoodDAO.getAllSurplusFoods();
+            for (SurplusFood surplusFood : surplusFoodList) {
+                System.out.println(surplusFood.getInventoryId() + " - " + surplusFood.isForSale());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
+
+

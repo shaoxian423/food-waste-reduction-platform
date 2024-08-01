@@ -1,40 +1,42 @@
 package com.duan.fwrp.entity;
 
+import java.sql.Date;
+
 public class RetailerInventory {
-    private String id;
-    private String retailerId;
+    private int id;
+    private int retailerId;
     private String itemName;
     private int quantity;
-    private String expiryDate;
+    private Date expiryDate;
     private double price;
     private double discountRate;
-    private boolean surplus;
+    private boolean isSurplus;
 
-    // Constructors, getters, and setters
-
-    public RetailerInventory(String retailerId, String itemName, int quantity, String expiryDate, double price, double discountRate) {
+    public RetailerInventory(int retailerId, String itemName, int quantity, Date expiryDate, double price, double discountRate) {
         this.retailerId = retailerId;
         this.itemName = itemName;
         this.quantity = quantity;
         this.expiryDate = expiryDate;
         this.price = price;
         this.discountRate = discountRate;
-        this.surplus = false;
+        this.isSurplus = false;
     }
 
-    public String getId() {
+    // Getters and setters
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getRetailerId() {
+    public int getRetailerId() {
         return retailerId;
     }
 
-    public void setRetailerId(String retailerId) {
+    public void setRetailerId(int retailerId) {
         this.retailerId = retailerId;
     }
 
@@ -54,11 +56,11 @@ public class RetailerInventory {
         this.quantity = quantity;
     }
 
-    public String getExpiryDate() {
+    public Date getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(String expiryDate) {
+    public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
 
@@ -79,10 +81,10 @@ public class RetailerInventory {
     }
 
     public boolean isSurplus() {
-        return surplus;
+        return isSurplus;
     }
 
-    public void setSurplus(boolean surplus) {
-        this.surplus = surplus;
+    public void setSurplus(boolean isSurplus) {
+        this.isSurplus = isSurplus;
     }
 }

@@ -1,6 +1,5 @@
 package com.duan.fwrp.servlet;
 
-import com.duan.fwrp.entity.RetailerInventory;
 import com.duan.fwrp.service.RetailerInventoryService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,21 +8,36 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.List;
+import java.sql.Date;
+import java.sql.SQLException;
 
-@WebServlet("/InventoryServlet")
+@WebServlet("/inventoryServlet")
 public class InventoryServlet extends HttpServlet {
-    private RetailerInventoryService retailerInventoryService;
+    private RetailerInventoryService inventoryService;
 
     @Override
     public void init() throws ServletException {
         super.init();
-        retailerInventoryService = new RetailerInventoryService();
+        try {
+            inventoryService = new RetailerInventoryService();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<RetailerInventory> inventories = retailerInventoryService.getAllInventories();
-        request.setAttribute("inventoryItems", inventories);
-        request.getRequestDispatcher("retailerDashboard.jsp").forward(request, response);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int retailerId = Integer.parseInt(request.getParameter("retailerId"));
+        String itemName = request.getParameter("itemName");
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        Date expiryDate = Date.valueOf(request.getParameter("expiryDate"));
+        double price = Double.parseDouble(request.getParameter("price"));
+        double discountRate = Double.parseDouble(request.getParameter("discountRate"));
+
+        try {
+            inventoryService.addItem(retailerId, itemName, quantity, expiryDate, price, discountRate);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        response.sendRedirect("retailerDashboard.jsp");
     }
 }

@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-//@WebServlet("/login")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -36,20 +36,20 @@ public class LoginServlet extends HttpServlet {
 
             switch (user.getUserType()) {
                 case "retailer":
-                    response.sendRedirect("retailerDashboard.jsp");
+                    response.sendRedirect("retailerDashboard");
                     break;
                 case "consumer":
-                    response.sendRedirect("consumerDashboard.jsp");
+                    response.sendRedirect("consumerDashboard");
                     break;
                 case "charity":
-                    response.sendRedirect("charityDashboard.jsp");
+                    response.sendRedirect("charityDashboard");
                     break;
                 default:
-                    response.sendRedirect("login.jsp");
+                    response.sendRedirect("login");
                     break;
             }
         } else {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("login");
         }
     }
 }

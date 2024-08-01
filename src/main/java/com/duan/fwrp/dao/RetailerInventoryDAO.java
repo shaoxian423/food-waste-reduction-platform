@@ -3,105 +3,81 @@ package com.duan.fwrp.dao;
 import com.duan.fwrp.entity.RetailerInventory;
 import com.duan.fwrp.util.DatabaseUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RetailerInventoryDAO {
-    private Connection connection;
 
-    public RetailerInventoryDAO() throws SQLException {
-        connection = DatabaseUtil.getConnection();
-    }
-
-    public void save(RetailerInventory item) {
-        try {
-            String query = "INSERT INTO Inventory (retailerId, itemName, quantity, expiryDate, price, discountRate) VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setString(1, item.getRetailerId());
-            pstmt.setString(2, item.getItemName());
-            pstmt.setInt(3, item.getQuantity());
-            pstmt.setString(4, item.getExpiryDate());
-            pstmt.setDouble(5, item.getPrice());
-            pstmt.setDouble(6, item.getDiscountRate());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public void addInventory(RetailerInventory inventory) throws SQLException {
+        String sql = "INSERT INTO retailer_inventory (retailer_id, item_name, quantity, expiry_date, price, discount_rate, is_surplus) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, inventory.getRetailerId());
+            stmt.setString(2, inventory.getItemName());
+            stmt.setInt(3, inventory.getQuantity());
+            stmt.setDate(4, inventory.getExpiryDate());
+            stmt.setDouble(5, inventory.getPrice());
+            stmt.setDouble(6, inventory.getDiscountRate());
+            stmt.setBoolean(7, inventory.isSurplus());
+            stmt.executeUpdate();
         }
     }
 
-    public List<RetailerInventory> findAll() {
-        List<RetailerInventory> items = new ArrayList<>();
-        try {
-            String query = "SELECT * FROM Inventory";
-            PreparedStatement pstmt = connection.prepareStatement(query);
-            ResultSet rs = pstmt.executeQuery();
+    public List<RetailerInventory> getAllRetailerInventories() throws SQLException {
+        List<RetailerInventory> inventories = new ArrayList<>();
+        String sql = "SELECT * FROM retailer_inventory";
+        try (Connection connection = DatabaseUtil.getConnection();
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                RetailerInventory item = new RetailerInventory(
-                        rs.getString("retailerId"),
-                        rs.getString("itemName"),
+                RetailerInventory inventory = new RetailerInventory(
+                        rs.getInt("retailer_id"),
+                        rs.getString("item_name"),
                         rs.getInt("quantity"),
-                        rs.getString("expiryDate"),
+                        rs.getDate("expiry_date"),
                         rs.getDouble("price"),
-                        rs.getDouble("discountRate")
+                        rs.getDouble("discount_rate")
                 );
-                item.setId(rs.getString("id"));
-                item.setSurplus(rs.getBoolean("surplus"));
-                items.add(item);
+                inventories.add(inventory);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return items;
+        return inventories;
     }
 
-    public RetailerInventory findById(String itemId) {
-        RetailerInventory item = null;
-        try {
-            String query = "SELECT * FROM Inventory WHERE id = ?";
-            PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setString(1, itemId);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                item = new RetailerInventory(
-                        rs.getString("retailerId"),
-                        rs.getString("itemName"),
-                        rs.getInt("quantity"),
-                        rs.getString("expiryDate"),
-                        rs.getDouble("price"),
-                        rs.getDouble("discountRate")
-                );
-                item.setId(rs.getString("id"));
-                item.setSurplus(rs.getBoolean("surplus"));
+    public RetailerInventory getInventoryById(int itemId) throws SQLException {
+        String sql = "SELECT * FROM retailer_inventory WHERE id = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, itemId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new RetailerInventory(
+                            rs.getInt("retailer_id"),
+                            rs.getString("item_name"),
+                            rs.getInt("quantity"),
+                            rs.getDate("expiry_date"),
+                            rs.getDouble("price"),
+                            rs.getDouble("discount_rate")
+                    );
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return item;
+        return null;
     }
 
-    public void update(RetailerInventory item) {
-        try {
-            String query = "UPDATE Inventory SET retailerId = ?, itemName = ?, quantity = ?, expiryDate = ?, price = ?, discountRate = ?, surplus = ? WHERE id = ?";
-            PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setString(1, item.getRetailerId());
-            pstmt.setString(2, item.getItemName());
-            pstmt.setInt(3, item.getQuantity());
-            pstmt.setString(4, item.getExpiryDate());
-            pstmt.setDouble(5, item.getPrice());
-            pstmt.setDouble(6, item.getDiscountRate());
-            pstmt.setBoolean(7, item.isSurplus());
-            pstmt.setString(8, item.getId());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public void updateInventory(RetailerInventory inventory) throws SQLException {
+        String sql = "UPDATE retailer_inventory SET item_name = ?, quantity = ?, expiry_date = ?, price = ?, discount_rate = ?, is_surplus = ? WHERE id = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, inventory.getItemName());
+            stmt.setInt(2, inventory.getQuantity());
+            stmt.setDate(3, inventory.getExpiryDate());
+            stmt.setDouble(4, inventory.getPrice());
+            stmt.setDouble(5, inventory.getDiscountRate());
+            stmt.setBoolean(6, inventory.isSurplus());
+            stmt.setInt(7, inventory.getId());
+            stmt.executeUpdate();
         }
-    }
-
-    public List<RetailerInventory> getAllRetailerInventories() {
-        return findAll();
     }
 }

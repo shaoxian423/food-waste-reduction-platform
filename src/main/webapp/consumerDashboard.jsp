@@ -5,122 +5,88 @@
   Time: 1:50 PM
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.duan.fwrp.entity.SurplusFood" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consumer Dashboard - Food Waste Reduction Platform</title>
+    <title>Consumer Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-        }
-        .header {
-            background-color: #00796b;
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header-left, .header-right {
-            display: flex;
-            align-items: center;
-        }
-        .header-left a, .header-right a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-            font-weight: bold;
-        }
-        .header-right a {
+        .navbar {
             background-color: #004d40;
-            padding: 10px 15px;
-            border-radius: 5px;
         }
-        .main-content {
-            text-align: center;
-            margin-top: 50px;
+        .navbar a {
+            color: white !important;
         }
-        .main-content h1 {
-            font-size: 30px;
-            color: #004d40;
+        .container {
+            margin-top: 30px;
         }
-        .form-container {
-            background-color: white;
-            padding: 20px;
-            margin: auto;
-            width: 500px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .table {
             margin-top: 20px;
         }
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        .form-container input[type="text"], .form-container input[type="number"], .form-container input[type="date"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .form-container input[type="submit"] {
-            background-color: #00796b;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .form-container input[type="submit"]:hover {
-            background-color: #004d40;
+        h1 {
+            margin-top: 20px;
+            color: #004d40;
         }
     </style>
 </head>
 <body>
-<div class="header">
-    <div class="header-left">
-        <a href="#">About Us</a>
-        <a href="#">About FWRP</a>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="#">FWRP</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">About Us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">About FWRP</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="register.jsp">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="login.jsp">Login</a>
+            </li>
+        </ul>
     </div>
-    <div class="header-right">
-        <a href="register.jsp">Register</a>
-        <a href="login.jsp">Login</a>
-    </div>
-</div>
-<div class="main-content">
+</nav>
+<div class="container">
     <h1>Welcome, Consumer!</h1>
-    <div class="form-container">
-        <h2>Discounted Surplus Food</h2>
-        <table>
-            <tr>
-                <th>Item Name</th>
-                <th>Quantity</th>
-                <th>Expiration Date</th>
-                <th>Discounted Price</th>
-            </tr>
-            <tr>
-                <td>Example Item</td>
-                <td>50</td>
-                <td>2024-08-01</td>
-                <td>$10</td>
-            </tr>
-            <!-- Add more items here -->
-        </table>
-    </div>
+    <h2>Discounted Surplus Food</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Item Name</th>
+            <th>Quantity</th>
+            <th>Expiration Date</th>
+            <th>Discounted Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%
+            List<SurplusFood> surplusFoodList = (List<SurplusFood>) request.getAttribute("surplusFoodList");
+            if (surplusFoodList != null) {
+                for (SurplusFood surplusFood : surplusFoodList) {
+        %>
+        <tr>
+            <td><%= surplusFood.getItemName() %></td>
+            <td><%= surplusFood.getQuantity() %></td>
+            <td><%= surplusFood.getExpiryDate() %></td>
+            <td><%= surplusFood.getDiscountedPrice() %></td>
+        </tr>
+        <%
+                }
+            }
+        %>
+        </tbody>
+    </table>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-

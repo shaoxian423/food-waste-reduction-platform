@@ -1,60 +1,28 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
-  <servlet>
-    <servlet-name>RegisterServlet</servlet-name>
-    <servlet-class>com.duan.fwrp.servlet.RegisterServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>RegisterServlet</servlet-name>
-    <url-pattern>/register</url-pattern>
-  </servlet-mapping>
 
-  <servlet>
-    <servlet-name>LoginServlet</servlet-name>
-    <servlet-class>com.duan.fwrp.servlet.LoginServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>LoginServlet</servlet-name>
-    <url-pattern>/login</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>MarkSurplusServlet</servlet-name>
-    <servlet-class>com.duan.fwrp.servlet.MarkSurplusServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>MarkSurplusServlet</servlet-name>
-    <url-pattern>/MarkSurplusServlet</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>AddInventoryServlet</servlet-name>
-    <servlet-class>com.duan.fwrp.servlet.AddInventoryServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>AddInventoryServlet</servlet-name>
-    <url-pattern>/AddInventoryServlet</url-pattern>
-  </servlet-mapping>
+  <display-name>Food Waste Reduction Platform</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
 
   <jsp-config>
     <taglib>
-      <taglib-uri>http://jakarta.apache.org/jsp/jstl/core</taglib-uri>
-      <taglib-location>/WEB-INF/lib/jakarta.servlet.jsp.jstl-2.0.0.jar</taglib-location>
+      <taglib-uri>http://java.sun.com/jsp/jstl/core</taglib-uri>
+      <taglib-location>/WEB-INF/lib/c.tld</taglib-location>
     </taglib>
   </jsp-config>
 
-=======
-<web-app xmlns="http://java.sun.com/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-         version="3.0">
-    <display-name>Food Waste Reduction Platform</display-name>
-    <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
->>>>>>> 3d045f45f7f9332e239a885afce9b13b00a751b8
+  <servlet>
+    <servlet-name>RetailerDashboardServlet</servlet-name>
+    <servlet-class>com.duan.fwrp.servlet.RetailerDashboardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RetailerDashboardServlet</servlet-name>
+    <url-pattern>/retailerDashboard</url-pattern>
+  </servlet-mapping>
+
 </web-app>

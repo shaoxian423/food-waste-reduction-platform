@@ -5,84 +5,87 @@ import java.util.Date;
 public class SurplusFood {
     private int id;
     private int inventoryId;
-    private int retailerId;
-    private String foodItem;
-    private int quantity;
-    private Date expireDate;
-    private double price;
-    private double discountRate;
     private boolean isForSale;
+    private double discountedPrice;
+    private String itemName;
+    private int quantity;
+    private Date expiryDate;
+    private double price;
 
-    // Getters and setters
-    public int getId() {
-        return id;
+    // Constructor
+    public SurplusFood(int id, int inventoryId, boolean isForSale, double discountedPrice, String itemName, int quantity, Date expiryDate, double price) {
+        this.id = id;
+        this.inventoryId = inventoryId;
+        this.isForSale = isForSale;
+        this.discountedPrice = discountedPrice;
+        this.itemName = itemName;
+        this.quantity = quantity;
+        this.expiryDate = expiryDate;
+        this.price = price;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    // Getters and Setters
+    public int getId() {
+        return id;
     }
 
     public int getInventoryId() {
         return inventoryId;
     }
 
-    public void setInventoryId(int inventoryId) {
-        this.inventoryId = inventoryId;
+    public boolean isForSale() {
+        return isForSale;
     }
 
-    public int getRetailerId() {
-        return retailerId;
+    public double getDiscountedPrice() {
+        return discountedPrice;
     }
 
-    public void setRetailerId(int retailerId) {
-        this.retailerId = retailerId;
-    }
-
-    public String getFoodItem() {
-        return foodItem;
-    }
-
-    public void setFoodItem(String foodItem) {
-        this.foodItem = foodItem;
+    public String getItemName() {
+        return itemName;
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public Date getExpireDate() {
-        return expireDate;
-    }
-
-    public void setExpireDate(Date expireDate) {
-        this.expireDate = expireDate;
+    public Date getExpiryDate() {
+        return expiryDate;
     }
 
     public double getPrice() {
         return price;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setInventoryId(int inventoryId) {
+        this.inventoryId = inventoryId;
+    }
+
+    public void setForSale(boolean forSale) {
+        isForSale = forSale;
+    }
+
+    public void setDiscountedPrice(double discountedPrice) {
+        this.discountedPrice = discountedPrice;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public double getDiscountRate() {
-        return discountRate;
-    }
-
-    public void setDiscountRate(double discountRate) {
-        this.discountRate = discountRate;
-    }
-
-    public boolean isForSale() {
-        return isForSale;
-    }
-
-    public void setIsForSale(boolean isForSale) {
-        this.isForSale = isForSale;
     }
 }
