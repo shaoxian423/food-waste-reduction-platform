@@ -19,7 +19,8 @@ This project aims to create a platform to reduce food waste by connecting food r
 
 ## Technologies Used
 - **Frontend**: HTML, CSS, JavaScript, JSP (JavaServer Pages)
-- **Backend**: Java, Spring Boot
+- **Backend**: Java, Jakarta Servlet
+- **Application Server**: Tomcat
 - **Database**: MySQL
 - **Containerization**: Docker
 - **Build and Dependency Management**: Maven
@@ -27,7 +28,7 @@ This project aims to create a platform to reduce food waste by connecting food r
 
 ## Getting Started
 ### Prerequisites
-- JDK 11
+- JDK 21
 - Docker
 - MySQL
 - Maven
