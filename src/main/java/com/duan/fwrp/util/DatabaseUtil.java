@@ -1,20 +1,42 @@
 package com.duan.fwrp.util;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class DatabaseUtil {
-    private static final String URL = "jdbc:mysql://localhost:3306/fwrp";
-    private static final String USER = "root";
-    private static final String PASSWORD = "Password_1234";
 
-    public static Connection getConnection() throws SQLException {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new SQLException("Unable to load database driver", e);
+    private static DatabaseUtil databaseUtil;
+    private static Connection connection = null;
+    private static String url;
+    private static String username;
+    private static String password;
+    private static String driver;
+
+    public static Connection getConnection() {
+        Properties properties = new Properties();
+        try(InputStream in = DatabaseUtil.class.getClassLoader().getResourceAsStream("database.properties")) {
+            properties.load(in);
+            url = properties.getProperty("url");
+            username = properties.getProperty("username");
+            password = properties.getProperty("password");
+            driver = properties.getProperty("driver");
+        }catch(IOException e) {
+            e.printStackTrace();
         }
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        try{
+            Class.forName(driver);
+            connection = DriverManager.getConnection(url, username, password);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }catch(ClassNotFoundException f){
+            f.printStackTrace();
+        }
+        return connection;
     }
 }
