@@ -43,7 +43,7 @@ public class AddInventoryServlet extends HttpServlet {
         // Ensure the date format is correct
         Date expiryDate = null;
         try {
-            java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(expiryDateStr);
+            java.util.Date utilDate = new SimpleDateFormat("MM/dd/yyyy").parse(expiryDateStr);
             expiryDate = new Date(utilDate.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
