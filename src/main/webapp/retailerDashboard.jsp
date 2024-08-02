@@ -118,7 +118,7 @@
                     <td>${item.expiryDate}</td>
                     <td>${item.price}</td>
                     <td>${item.discountRate}</td>
-                    <td><a href="markAsSurplus?id=${item.id}" class="btn btn-link">Mark as Surplus /a><td>
+                    <td><a href="markAsSurplus?id=${item.id}" class="btn btn-link">Mark as Surplus</a><td>
                 </tr>
             </c:forEach>
             </tbody>
