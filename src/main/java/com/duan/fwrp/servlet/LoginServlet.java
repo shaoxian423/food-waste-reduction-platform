@@ -36,13 +36,13 @@ public class LoginServlet extends HttpServlet {
 
             switch (user.getUserType()) {
                 case "retailer":
-                    response.sendRedirect("retailerDashboard");
+                    response.sendRedirect("retailerDashboard?id=" + user.getId());
                     break;
                 case "consumer":
-                    response.sendRedirect("consumerDashboard");
+                    response.sendRedirect("consumerDashboard?id=" + user.getId());
                     break;
                 case "charity":
-                    response.sendRedirect("charityDashboard");
+                    response.sendRedirect("charityDashboard?id=" + user.getId());
                     break;
                 default:
                     response.sendRedirect("login");
