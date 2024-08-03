@@ -34,13 +34,18 @@ public class SurplusFoodDAO {
     }
 
     public void markAsSurplus(int inventoryId, double discountedPrice) throws SQLException {
-        String sql = "INSERT INTO surplusfood(inventory_id, discount_price) VALUES(?, ?) ";
+        String sql1 = "INSERT INTO surplusfood(inventory_id, discount_price) VALUES(?, ?) ";
+        String sql2 = "UPDATE retailer_inventory SET is_surplus = 1 WHERE id = ?";
         try (Connection connection = DatabaseUtil.getConnection()){
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, inventoryId);
-            pstmt.setDouble(2, discountedPrice);
-            pstmt.executeUpdate();
+            PreparedStatement pstmt1 = connection.prepareStatement(sql1);
+            PreparedStatement pstmt2 = connection.prepareStatement(sql2);
+            pstmt1.setInt(1, inventoryId);
+            pstmt1.setDouble(2, discountedPrice);
+            pstmt2.setInt(1, inventoryId);
+            pstmt1.executeUpdate();
+            pstmt2.executeUpdate();
         }
     }
+
 
 }
