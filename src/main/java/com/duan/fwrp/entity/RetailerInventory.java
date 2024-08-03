@@ -12,7 +12,8 @@ public class RetailerInventory {
     private double discountRate;
     private boolean isSurplus;
 
-    public RetailerInventory(int retailerId, String itemName, int quantity, Date expiryDate, double price, double discountRate) {
+    public RetailerInventory(int id, int retailerId, String itemName, int quantity, Date expiryDate, double price, double discountRate) {
+        this.id = id;
         this.retailerId = retailerId;
         this.itemName = itemName;
         this.quantity = quantity;

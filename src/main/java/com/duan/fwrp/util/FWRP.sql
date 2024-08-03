@@ -86,7 +86,6 @@ CREATE TABLE Alerts (
 CREATE TABLE SurplusFood (
                              id INT AUTO_INCREMENT PRIMARY KEY,
                              inventory_id INT,
-                             is_for_sale BOOLEAN NOT NULL,
                              discount_price DECIMAL(10, 2),
                              FOREIGN KEY (inventory_id) REFERENCES Retailer_Inventory(id)
 );

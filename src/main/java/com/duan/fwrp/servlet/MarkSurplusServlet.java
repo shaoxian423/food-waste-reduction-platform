@@ -15,13 +15,15 @@ public class MarkSurplusServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        boolean isSurplus = true; // Assuming this is what you want to set
-        double discountedPrice = Double.parseDouble(request.getParameter("discountedPrice")); // Ensure this parameter is passed
+        int inventoryId = Integer.parseInt(request.getParameter("inventoryId"));
+        System.out.println(inventoryId);
+        double price = Double.parseDouble(request.getParameter("price"));
+        double discountedRate = Double.parseDouble(request.getParameter("discountedRate"));
+        double discountedPrice = price * discountedRate;
 
         SurplusFoodDAO surplusFoodDAO = new SurplusFoodDAO();
         try {
-            surplusFoodDAO.markAsSurplus(id, isSurplus, discountedPrice);
+            surplusFoodDAO.markAsSurplus(inventoryId, discountedPrice);
             response.sendRedirect("retailerDashboard"); // Redirect to the retailer dashboard after marking as surplus
         } catch (SQLException e) {
             e.printStackTrace();

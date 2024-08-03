@@ -13,8 +13,8 @@ public class RetailerInventoryService {
         inventoryDAO = new RetailerInventoryDAO();
     }
 
-    public void addItem(int retailerId, String itemName, int quantity, java.sql.Date expiryDate, double price, double discountRate) throws SQLException {
-        RetailerInventory inventory = new RetailerInventory(retailerId, itemName, quantity, expiryDate, price, discountRate);
+    public void addItem(int id, int retailerId, String itemName, int quantity, java.sql.Date expiryDate, double price, double discountRate) throws SQLException {
+        RetailerInventory inventory = new RetailerInventory(id, retailerId, itemName, quantity, expiryDate, price, discountRate);
         inventoryDAO.addInventory(inventory);
     }
 

@@ -28,6 +28,7 @@ public class AddInventoryServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idStr = request.getParameter("id");
         String retailerIdStr = request.getParameter("retailerId");
         String itemName = request.getParameter("itemName");
         String quantityStr = request.getParameter("quantity");
@@ -35,6 +36,7 @@ public class AddInventoryServlet extends HttpServlet {
         String priceStr = request.getParameter("price");
         String discountRateStr = request.getParameter("discountRate");
 
+        int id = Integer.parseInt(idStr);
         int retailerId = Integer.parseInt(retailerIdStr);
         int quantity = Integer.parseInt(quantityStr);
         double price = Double.parseDouble(priceStr);
@@ -51,7 +53,7 @@ public class AddInventoryServlet extends HttpServlet {
         }
 
         try {
-            inventoryService.addItem(retailerId, itemName, quantity, expiryDate, price, discountRate);
+            inventoryService.addItem(id, retailerId, itemName, quantity, expiryDate, price, discountRate);
             response.sendRedirect("retailerDashboard.jsp");
         } catch (SQLException e) {
             e.printStackTrace();

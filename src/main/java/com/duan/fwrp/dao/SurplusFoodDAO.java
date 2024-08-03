@@ -33,13 +33,12 @@ public class SurplusFoodDAO {
         return surplusFoodList;
     }
 
-    public void markAsSurplus(int id, boolean isSurplus, double discountedPrice) throws SQLException {
-        String sql = "UPDATE surplusfood SET is_for_sale = ?, discounted_price = ? WHERE id = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setBoolean(1, isSurplus);
+    public void markAsSurplus(int inventoryId, double discountedPrice) throws SQLException {
+        String sql = "INSERT INTO surplusfood(inventory_id, discount_price) VALUES(?, ?) ";
+        try (Connection connection = DatabaseUtil.getConnection()){
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, inventoryId);
             pstmt.setDouble(2, discountedPrice);
-            pstmt.setInt(3, id);
             pstmt.executeUpdate();
         }
     }

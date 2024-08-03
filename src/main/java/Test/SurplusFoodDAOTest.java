@@ -12,7 +12,7 @@ public class SurplusFoodDAOTest {
         try {
             List<SurplusFood> surplusFoodList = surplusFoodDAO.getAllSurplusFoods();
             for (SurplusFood surplusFood : surplusFoodList) {
-                System.out.println(surplusFood.getInventoryId() + " - " + surplusFood.isForSale());
+                System.out.println(surplusFood.getInventoryId());
             }
         } catch (SQLException e) {
             e.printStackTrace();

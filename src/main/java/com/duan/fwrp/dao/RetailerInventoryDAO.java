@@ -32,6 +32,7 @@ public class RetailerInventoryDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 RetailerInventory inventory = new RetailerInventory(
+                        rs.getInt("id"),
                         rs.getInt("retailer_id"),
                         rs.getString("item_name"),
                         rs.getInt("quantity"),
@@ -53,6 +54,7 @@ public class RetailerInventoryDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return new RetailerInventory(
+                            rs.getInt("id"),
                             rs.getInt("retailer_id"),
                             rs.getString("item_name"),
                             rs.getInt("quantity"),
