@@ -21,6 +21,7 @@ public class MarkSurplusServlet extends HttpServlet {
         double discountedRate = Double.parseDouble(request.getParameter("discountedRate"));
         double discountedPrice = price * discountedRate;
 
+
         SurplusFoodDAO surplusFoodDAO = new SurplusFoodDAO();
         try {
             surplusFoodDAO.markAsSurplus(inventoryId, discountedPrice);

@@ -38,7 +38,8 @@ public class RetailerInventoryDAO {
                         rs.getInt("quantity"),
                         rs.getDate("expiry_date"),
                         rs.getDouble("price"),
-                        rs.getDouble("discount_rate")
+                        rs.getDouble("discount_rate"),
+                        rs.getBoolean("is_surplus")
                 );
                 inventories.add(inventory);
             }
@@ -60,7 +61,8 @@ public class RetailerInventoryDAO {
                             rs.getInt("quantity"),
                             rs.getDate("expiry_date"),
                             rs.getDouble("price"),
-                            rs.getDouble("discount_rate")
+                            rs.getDouble("discount_rate"),
+                            rs.getBoolean("is_surplus")
                     );
                 }
             }

@@ -118,7 +118,16 @@
                     <td>${item.expiryDate}</td>
                     <td>${item.price}</td>
                     <td>${item.discountRate}</td>
-                    <td><a href="markAsSurplus?inventoryId=${item.id}&discountedRate=${item.discountRate}&price=${item.price}" class="btn btn-link">Mark as Surplus</a><td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${item.surplus}">
+                                Surplus
+                            </c:when>
+                            <c:otherwise>
+                                <a href="markAsSurplus?inventoryId=${item.id}&discountedRate=${item.discountRate}&price=${item.price}" class="btn btn-link">Mark as Surplus</a>
+                            </c:otherwise>
+                        </c:choose>
+                    <td>
                 </tr>
             </c:forEach>
             </tbody>

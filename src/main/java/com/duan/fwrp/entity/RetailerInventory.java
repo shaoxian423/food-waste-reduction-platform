@@ -12,7 +12,7 @@ public class RetailerInventory {
     private double discountRate;
     private boolean isSurplus;
 
-    public RetailerInventory(int id, int retailerId, String itemName, int quantity, Date expiryDate, double price, double discountRate) {
+    public RetailerInventory(int id, int retailerId, String itemName, int quantity, Date expiryDate, double price, double discountRate, boolean isSurplus) {
         this.id = id;
         this.retailerId = retailerId;
         this.itemName = itemName;
@@ -20,7 +20,17 @@ public class RetailerInventory {
         this.expiryDate = expiryDate;
         this.price = price;
         this.discountRate = discountRate;
-        this.isSurplus = false;
+        this.isSurplus = isSurplus;
+    }
+
+    public RetailerInventory(int retailerId, String itemName, int quantity, Date expiryDate, double price, double discountRate, boolean isSurplus) {
+        this.retailerId = retailerId;
+        this.itemName = itemName;
+        this.quantity = quantity;
+        this.expiryDate = expiryDate;
+        this.price = price;
+        this.discountRate = discountRate;
+        this.isSurplus = isSurplus;
     }
 
     // Getters and setters

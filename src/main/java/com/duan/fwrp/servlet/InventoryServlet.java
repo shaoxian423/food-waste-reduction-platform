@@ -26,16 +26,16 @@ public class InventoryServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
         int retailerId = Integer.parseInt(request.getParameter("retailerId"));
         String itemName = request.getParameter("itemName");
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         Date expiryDate = Date.valueOf(request.getParameter("expiryDate"));
         double price = Double.parseDouble(request.getParameter("price"));
         double discountRate = Double.parseDouble(request.getParameter("discountRate"));
+        boolean isSurplus = Boolean.parseBoolean(request.getParameter("isSurplus"));
 
         try {
-            inventoryService.addItem(id, retailerId, itemName, quantity, expiryDate, price, discountRate);
+            inventoryService.addItem(retailerId, itemName, quantity, expiryDate, price, discountRate, isSurplus);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
