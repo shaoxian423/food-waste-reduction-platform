@@ -156,3 +156,14 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER before_delete_inventory
+    BEFORE DELETE ON Retailer_Inventory
+    FOR EACH ROW
+BEGIN
+    DELETE FROM SurplusFood WHERE inventory_id = OLD.id;
+END $$
+
+DELIMITER ;

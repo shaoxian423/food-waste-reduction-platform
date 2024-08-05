@@ -117,4 +117,13 @@ public class RetailerInventoryDAO {
             stmt.executeUpdate();
         }
     }
+
+    public void deleteInventoryById(int itemId) throws SQLException {
+        String sql = "DELETE FROM retailer_inventory WHERE id = ?";
+        try (Connection connection = DatabaseUtil.getConnection()){
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, itemId);
+            stmt.executeUpdate();
+        }
+    }
 }
