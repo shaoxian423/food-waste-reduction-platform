@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
                 case "consumer":
                     response.sendRedirect("consumerDashboard");
                     break;
-                case "charity":
+                case "CharitableOrganization":
                     response.sendRedirect("charityDashboard");
                     break;
                 default:
@@ -51,5 +51,11 @@ public class LoginServlet extends HttpServlet {
         } else {
             response.sendRedirect("login");
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Simply forward to the login.jsp page
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 }
