@@ -43,7 +43,7 @@ public class RetailerDashboardServlet extends HttpServlet {
 
 
         try {
-            List<RetailerInventory> inventoryList = inventoryService.getAllItems();
+            List<RetailerInventory> inventoryList = inventoryService.getAllItems(Integer.parseInt(id));
             request.setAttribute("inventoryList", inventoryList);
             request.setAttribute("username", username);
             request.setAttribute("id", id);

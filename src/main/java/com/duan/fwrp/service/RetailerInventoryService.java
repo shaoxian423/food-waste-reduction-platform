@@ -18,8 +18,8 @@ public class RetailerInventoryService {
         inventoryDAO.addInventory(inventory);
     }
 
-    public List<RetailerInventory> getAllItems() throws SQLException {
-        return inventoryDAO.getAllRetailerInventories();
+    public List<RetailerInventory> getAllItems(int id) throws SQLException {
+        return inventoryDAO.getAllRetailerInventoriesById(id);
     }
 
     public void markAsSurplus(int itemId) throws SQLException {
