@@ -63,11 +63,8 @@
     <div class="card">
         <h2 class="text-center">Retailer Dashboard</h2>
         <form action="addInventory" method="post">
+            <input type="hidden" name="retailerId" value="${id}" /> <!-- Hidden field to preserve the "id" parameter -->
             <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="retailerId">Retailer ID:</label>
-                    <input type="text" class="form-control" id="retailerId" name="retailerId">
-                </div>
                 <div class="form-group col-md-6">
                     <label for="itemName">Item Name:</label>
                     <input type="text" class="form-control" id="itemName" name="itemName">
