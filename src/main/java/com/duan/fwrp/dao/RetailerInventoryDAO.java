@@ -10,7 +10,7 @@ import java.util.List;
 public class RetailerInventoryDAO {
 
     public void addInventory(RetailerInventory inventory) throws SQLException {
-        String sql = "INSERT INTO retailer_inventory (retailer_id, item_name, quantity, expiry_date, price, discount_rate, is_surplus) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO retailer_inventory (retailer_id, item_name, quantity, expiry_date, price, discount_rate, location, is_surplus, is_for_donation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = DatabaseUtil.getConnection()){
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, inventory.getRetailerId());
@@ -19,7 +19,9 @@ public class RetailerInventoryDAO {
             stmt.setDate(4, inventory.getExpiryDate());
             stmt.setDouble(5, inventory.getPrice());
             stmt.setDouble(6, inventory.getDiscountRate());
-            stmt.setBoolean(7, inventory.isSurplus());
+            stmt.setString(7, inventory.getLocation());
+            stmt.setBoolean(8, inventory.isSurplus());
+            stmt.setBoolean(9, inventory.isForDonation());
             stmt.executeUpdate();
         }
     }
@@ -39,7 +41,9 @@ public class RetailerInventoryDAO {
                         rs.getDate("expiry_date"),
                         rs.getDouble("price"),
                         rs.getDouble("discount_rate"),
-                        rs.getBoolean("is_surplus")
+                        rs.getString("location"),
+                        rs.getBoolean("is_surplus"),
+                        rs.getBoolean("for_donation")
                 );
                 inventories.add(inventory);
             }
@@ -63,7 +67,9 @@ public class RetailerInventoryDAO {
                         rs.getDate("expiry_date"),
                         rs.getDouble("price"),
                         rs.getDouble("discount_rate"),
-                        rs.getBoolean("is_surplus")
+                        rs.getString("location"),
+                        rs.getBoolean("is_surplus"),
+                        rs.getBoolean("is_for_donation")
                 );
                 inventories.add(inventory);
             }
@@ -87,7 +93,35 @@ public class RetailerInventoryDAO {
                         rs.getDate("expiry_date"),
                         rs.getDouble("price"),
                         rs.getDouble("discount_rate"),
-                        rs.getBoolean("is_surplus")
+                        rs.getString("location"),
+                        rs.getBoolean("is_surplus"),
+                        rs.getBoolean("is_for_donation")
+                );
+                inventories.add(inventory);
+            }
+        }
+        return inventories;
+    }
+
+    public List<RetailerInventory> getAllDonationInventoriesById(int id) throws SQLException {
+        List<RetailerInventory> inventories = new ArrayList<>();
+        String sql = "SELECT * FROM retailer_inventory WHERE retailer_id = ? AND is_for_donation = 1";
+        try (Connection connection = DatabaseUtil.getConnection();){
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                RetailerInventory inventory = new RetailerInventory(
+                        rs.getInt("id"),
+                        rs.getInt("retailer_id"),
+                        rs.getString("item_name"),
+                        rs.getInt("quantity"),
+                        rs.getDate("expiry_date"),
+                        rs.getDouble("price"),
+                        rs.getDouble("discount_rate"),
+                        rs.getString("location"),
+                        rs.getBoolean("is_surplus"),
+                        rs.getBoolean("is_for_donation")
                 );
                 inventories.add(inventory);
             }
@@ -110,7 +144,9 @@ public class RetailerInventoryDAO {
                             rs.getDate("expiry_date"),
                             rs.getDouble("price"),
                             rs.getDouble("discount_rate"),
-                            rs.getBoolean("is_surplus")
+                            rs.getString("location"),
+                            rs.getBoolean("is_surplus"),
+                            rs.getBoolean("is_for_donation")
                     );
                 }
             }
@@ -119,7 +155,7 @@ public class RetailerInventoryDAO {
     }
 
     public void updateInventory(RetailerInventory inventory) throws SQLException {
-        String sql = "UPDATE retailer_inventory SET item_name = ?, quantity = ?, expiry_date = ?, price = ?, discount_rate = ?, is_surplus = ? WHERE id = ?";
+        String sql = "UPDATE retailer_inventory SET item_name = ?, quantity = ?, expiry_date = ?, price = ?, discount_rate = ?, location = ?, is_surplus = ?, is_for_donation = ? WHERE id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, inventory.getItemName());
@@ -127,14 +163,25 @@ public class RetailerInventoryDAO {
             stmt.setDate(3, inventory.getExpiryDate());
             stmt.setDouble(4, inventory.getPrice());
             stmt.setDouble(5, inventory.getDiscountRate());
-            stmt.setBoolean(6, inventory.isSurplus());
-            stmt.setInt(7, inventory.getId());
+            stmt.setString(6, inventory.getLocation());
+            stmt.setBoolean(7, inventory.isSurplus());
+            stmt.setBoolean(8, inventory.isForDonation());
+            stmt.setInt(9, inventory.getId());
             stmt.executeUpdate();
         }
     }
 
     public void markIsSurplusTrueById(int itemId) throws SQLException {
         String sql = "UPDATE retailer_inventory SET is_surplus = 1 WHERE id = ?";
+        try (Connection connection = DatabaseUtil.getConnection()){
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, itemId);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void markIsDonationTrueById(int itemId) throws SQLException {
+        String sql = "UPDATE retailer_inventory SET is_for_donation = 1 WHERE id = ?";
         try (Connection connection = DatabaseUtil.getConnection()){
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, itemId);
@@ -149,5 +196,30 @@ public class RetailerInventoryDAO {
             stmt.setInt(1, itemId);
             stmt.executeUpdate();
         }
+    }
+
+    public List<RetailerInventory> getAllSurplusInventories() throws SQLException {
+        List<RetailerInventory> inventories = new ArrayList<>();
+        String sql = "SELECT * FROM retailer_inventory WHERE is_surplus = 1";
+        try (Connection connection = DatabaseUtil.getConnection();){
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                RetailerInventory inventory = new RetailerInventory(
+                        rs.getInt("id"),
+                        rs.getInt("retailer_id"),
+                        rs.getString("item_name"),
+                        rs.getInt("quantity"),
+                        rs.getDate("expiry_date"),
+                        rs.getDouble("price"),
+                        rs.getDouble("discount_rate"),
+                        rs.getString("locaation"),
+                        rs.getBoolean("is_surplus"),
+                        rs.getBoolean("is_for_donation")
+                );
+                inventories.add(inventory);
+            }
+        }
+        return inventories;
     }
 }

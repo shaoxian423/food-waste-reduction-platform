@@ -32,10 +32,12 @@ public class InventoryServlet extends HttpServlet {
         Date expiryDate = Date.valueOf(request.getParameter("expiryDate"));
         double price = Double.parseDouble(request.getParameter("price"));
         double discountRate = Double.parseDouble(request.getParameter("discountRate"));
+        String location = request.getParameter("location");
         boolean isSurplus = Boolean.parseBoolean(request.getParameter("isSurplus"));
+        boolean isForDonation = Boolean.parseBoolean(request.getParameter("isForDonation"));
 
         try {
-            inventoryService.addItem(retailerId, itemName, quantity, expiryDate, price, discountRate, isSurplus);
+            inventoryService.addItem(retailerId, itemName, quantity, expiryDate, price, discountRate, location, isSurplus, isForDonation);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

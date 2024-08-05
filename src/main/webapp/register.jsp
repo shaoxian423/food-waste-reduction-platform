@@ -97,6 +97,7 @@
             <select id="userType" name="userType">
                 <option value="Retailer">Retailer</option>
                 <option value="Consumer">Consumer</option>
+                <option value="Charity">Charity</option>
             </select>
             <input type="submit" value="Register">
         </form>

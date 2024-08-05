@@ -2,8 +2,7 @@ DROP DATABASE IF EXISTS FWRP;
 CREATE DATABASE FWRP;
 USE FWRP;
 
--- 创建 Users 表
-CREATE TABLE Users (
+CREATE TABLE users (
                        id INT AUTO_INCREMENT PRIMARY KEY,
                        name VARCHAR(100) NOT NULL,
                        email VARCHAR(100) NOT NULL UNIQUE,
@@ -12,8 +11,7 @@ CREATE TABLE Users (
                        user_type ENUM('retailer', 'consumer', 'charity') NOT NULL
 );
 
--- 创建 Retailer_Inventory 表
-CREATE TABLE Retailer_Inventory (
+CREATE TABLE retailer_inventory (
                                     id INT AUTO_INCREMENT PRIMARY KEY,
                                     retailer_id INT,
                                     item_name VARCHAR(100) NOT NULL,
@@ -21,149 +19,102 @@ CREATE TABLE Retailer_Inventory (
                                     expiry_date DATE NOT NULL,
                                     price DOUBLE NOT NULL,
                                     discount_rate DOUBLE,
+                                    location VARCHAR(100) NOT NULL,
                                     is_surplus BOOLEAN DEFAULT FALSE,
+                                    is_for_donation BOOLEAN DEFAULT FALSE,
                                     FOREIGN KEY (retailer_id) REFERENCES Users(id)
 );
 
--- 创建 Consumer_Transaction 表
-CREATE TABLE Consumer_Transaction (
-                                      id INT AUTO_INCREMENT PRIMARY KEY,
-                                      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                                      consumer_id INT,
-                                      inventory_id INT,
-                                      quantity INT NOT NULL,
-                                      expiry_date DATE NOT NULL,
-                                      price DOUBLE NOT NULL,
-                                      discount_rate DOUBLE,
-                                      FOREIGN KEY (consumer_id) REFERENCES Users(id),
-                                      FOREIGN KEY (inventory_id) REFERENCES Retailer_Inventory(id)
-);
-
--- 创建 Charity_Transaction 表
-CREATE TABLE Charity_Transaction (
-                                     id INT AUTO_INCREMENT PRIMARY KEY,
-                                     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                                     charity_id INT,
-                                     inventory_id INT,
-                                     quantity INT NOT NULL,
-                                     expiry_date DATE NOT NULL,
-                                     price DOUBLE NOT NULL,
-                                     FOREIGN KEY (charity_id) REFERENCES Users(id),
-                                     FOREIGN KEY (inventory_id) REFERENCES Retailer_Inventory(id)
-);
-
--- 创建 Consumer_Subscription 表
-CREATE TABLE Consumer_Subscription (
-                                       id INT AUTO_INCREMENT PRIMARY KEY,
-                                       consumer_id INT,
-                                       inventory_id INT,
-                                       notification_method ENUM('email', 'phone'),
-                                       FOREIGN KEY (consumer_id) REFERENCES Users(id),
-                                       FOREIGN KEY (inventory_id) REFERENCES Retailer_Inventory(id)
-);
-
--- 创建 Charity_Subscription 表
-CREATE TABLE Charity_Subscription (
-                                      id INT AUTO_INCREMENT PRIMARY KEY,
-                                      charity_id INT,
-                                      inventory_id INT,
-                                      notification_method ENUM('email', 'phone'),
-                                      FOREIGN KEY (charity_id) REFERENCES Users(id),
-                                      FOREIGN KEY (inventory_id) REFERENCES Retailer_Inventory(id)
-);
-
--- 创建 Alerts 表
-CREATE TABLE Alerts (
-                        id INT AUTO_INCREMENT PRIMARY KEY,
-                        user_id INT,
-                        location VARCHAR(100),
-                        communication_method ENUM('email', 'phone'),
-                        food_preference VARCHAR(100),
-                        FOREIGN KEY (user_id) REFERENCES Users(id)
-);
-
--- 创建 SurplusFood 表（如需保留）
-CREATE TABLE SurplusFood (
+CREATE TABLE transaction (
                              id INT AUTO_INCREMENT PRIMARY KEY,
+                             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                             consumer_id INT,
                              inventory_id INT,
-                             discount_price DECIMAL(10, 2),
+                             quantity INT NOT NULL,
+                             FOREIGN KEY (consumer_id) REFERENCES Users(id),
                              FOREIGN KEY (inventory_id) REFERENCES Retailer_Inventory(id)
 );
 
-DELIMITER $$
+CREATE TABLE user_subscription (
+                                   id INT AUTO_INCREMENT PRIMARY KEY,
+                                   user_id INT,
+                                   communication_method ENUM('email', 'phone'),
+                                   location VARCHAR(100),
+                                   food_preference VARCHAR(100),
+                                   FOREIGN KEY (user_id) REFERENCES Users(id)
+);
 
-CREATE TRIGGER after_update_is_surplus
-    AFTER UPDATE ON Retailer_Inventory
+CREATE TABLE notifications (
+                               id INT AUTO_INCREMENT PRIMARY KEY,
+                               user_id INT,
+                               inventory_id INT,
+                               FOREIGN KEY (user_id) REFERENCES Users(id),
+                               FOREIGN KEY (inventory_id) REFERENCES Retailer_Inventory(id)
+);
+
+DROP TRIGGER IF EXISTS set_surplus_on_insert;
+DELIMITER //
+CREATE TRIGGER set_surplus_on_insert
+    BEFORE INSERT ON retailer_inventory
     FOR EACH ROW
 BEGIN
-    DECLARE discount_price DECIMAL(10, 2);
+    DECLARE expiry_date_limit DATE;
+    SET expiry_date_limit = DATE_ADD(CURDATE(), INTERVAL 7 DAY);
 
-    -- If is_surplus is changed from 0 to 1, insert into SurplusFood
-    IF NEW.is_surplus = 1 AND OLD.is_surplus = 0 THEN
-        SET discount_price = NEW.price * NEW.discount_rate;
-
-        INSERT INTO SurplusFood (inventory_id, discount_price)
-        VALUES (NEW.id, discount_price);
+    IF NEW.is_surplus IS TRUE THEN
+        SET NEW.is_surplus = TRUE;
+    ELSE
+        IF NEW.expiry_date <= expiry_date_limit THEN
+            SET NEW.is_surplus = TRUE;
+        ELSE
+            SET NEW.is_surplus = FALSE;
+        END IF;
     END IF;
-
-    -- If is_surplus is changed from 1 to 0, delete from SurplusFood
-    IF NEW.is_surplus = 0 AND OLD.is_surplus = 1 THEN
-        DELETE FROM SurplusFood WHERE inventory_id = NEW.id;
-    END IF;
-END $$
-
+END;
+//
 DELIMITER ;
 
-DELIMITER $$
-
-CREATE TRIGGER after_insert_is_surplus
-    AFTER INSERT ON Retailer_Inventory
+DROP TRIGGER IF EXISTS set_surplus_on_update;
+DELIMITER //
+CREATE TRIGGER set_surplus_on_update
+    BEFORE UPDATE ON retailer_inventory
     FOR EACH ROW
 BEGIN
-    DECLARE discount_price DECIMAL(10, 2);
+    DECLARE expiry_date_limit DATE;
+    SET expiry_date_limit = DATE_ADD(CURDATE(), INTERVAL 7 DAY);
 
-    -- If is_surplus is true, insert into SurplusFood
-    IF NEW.is_surplus = 1 THEN
-        SET discount_price = NEW.price * NEW.discount_rate;
-
-        INSERT INTO SurplusFood (inventory_id, discount_price)
-        VALUES (NEW.id, discount_price);
+    IF NEW.is_surplus IS TRUE THEN
+        SET NEW.is_surplus = TRUE;
+    ELSE
+        IF NEW.expiry_date <= expiry_date_limit THEN
+            SET NEW.is_surplus = TRUE;
+        ELSE
+            SET NEW.is_surplus = FALSE;
+        END IF;
     END IF;
-END $$
-
+END;
+//
 DELIMITER ;
 
--- Assuming the Retailer_Inventory and SurplusFood tables already exist
+DROP EVENT IF EXISTS update_surplus_status;
+DELIMITER //
+CREATE EVENT update_surplus_status
+    ON SCHEDULE EVERY 1 DAY
+    DO
+    BEGIN
+        DECLARE expiry_date_limit DATE;
+        SET expiry_date_limit = DATE_ADD(CURDATE(), INTERVAL 7 DAY);
 
-DELIMITER $$
+        -- Automatically set items as surplus based on expiry date
+        UPDATE retailer_inventory
+        SET is_surplus = TRUE
+        WHERE expiry_date <= expiry_date_limit AND is_surplus = FALSE;
 
--- Trigger to handle changes in discount_rate or price
-CREATE TRIGGER after_update_discount_rate_or_price
-    AFTER UPDATE ON Retailer_Inventory
-    FOR EACH ROW
-BEGIN
-    DECLARE new_discount_price DECIMAL(10, 2);
-
-    -- Check if either discount_rate or price has changed
-    IF NEW.discount_rate != OLD.discount_rate OR NEW.price != OLD.price THEN
-        SET new_discount_price = NEW.price * NEW.discount_rate;
-
-        -- Update discount_price in SurplusFood table
-        UPDATE SurplusFood
-        SET discount_price = new_discount_price
-        WHERE inventory_id = NEW.id AND NEW.is_surplus = 1;
-    END IF;
-END $$
-
+        -- Optionally, reset items not in surplus range if needed
+        -- UPDATE retailer_inventory
+        -- SET is_surplus = FALSE
+        -- WHERE expiry_date > expiry_date_limit AND is_surplus = TRUE;
+    END;
+//
 DELIMITER ;
 
-DELIMITER $$
-
-CREATE TRIGGER before_delete_inventory
-    BEFORE DELETE ON Retailer_Inventory
-    FOR EACH ROW
-BEGIN
-    DELETE FROM SurplusFood WHERE inventory_id = OLD.id;
-END $$
-
-DELIMITER ;

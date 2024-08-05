@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/surplusFoodList")
-public class SurplusFoodListServlet extends HttpServlet {
+@WebServlet("/donationFoodList")
+public class DonationFoodListServlet extends HttpServlet {
     private RetailerInventoryService inventoryService;
 
     @Override
@@ -42,7 +42,7 @@ public class SurplusFoodListServlet extends HttpServlet {
 
 
         try {
-            List<RetailerInventory> inventoryList = inventoryService.getAllSurplusFoodById(Integer.parseInt(id));
+            List<RetailerInventory> inventoryList = inventoryService.getAllDonationFoodById(Integer.parseInt(id));
             request.setAttribute("inventoryList", inventoryList);
             request.setAttribute("username", username);
             request.setAttribute("id", id);

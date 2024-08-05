@@ -11,113 +11,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Charity Dashboard - Food Waste Reduction Platform</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-        }
-        .header {
-            background-color: #00796b;
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header-left, .header-right {
-            display: flex;
-            align-items: center;
-        }
-        .header-left a, .header-right a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-            font-weight: bold;
-        }
-        .header-right a {
+        .navbar {
             background-color: #004d40;
-            padding: 10px 15px;
-            border-radius: 5px;
         }
-        .main-content {
-            text-align: center;
+        .navbar a {
+            color: white !important;
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
             margin-top: 50px;
         }
-        .main-content h1 {
-            font-size: 30px;
-            color: #004d40;
-        }
-        .form-container {
-            background-color: white;
+        .card {
             padding: 20px;
-            margin: auto;
-            width: 500px;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
         }
         table {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table, th, td {
-            border: 1px solid #ccc;
         }
         th, td {
-            padding: 10px;
             text-align: left;
+            padding: 8px;
         }
-        .form-container input[type="text"], .form-container input[type="number"], .form-container input[type="date"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .form-container input[type="submit"] {
-            background-color: #00796b;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .form-container input[type="submit"]:hover {
+        th {
             background-color: #004d40;
+            color: white;
         }
     </style>
 </head>
 <body>
-<div class="header">
-    <div class="header-left">
-        <a href="#">About Us</a>
-        <a href="#">About FWRP</a>
+<nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="#">FWRP</a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="index.jsp">About Us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="index.jsp">About FWRP</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Welcome, ${username}!</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="login.jsp">Sign Out</a>
+            </li>
+        </ul>
     </div>
-    <div class="header-right">
-        <a href="register.jsp">Register</a>
-        <a href="login.jsp">Login</a>
-    </div>
-</div>
-<div class="main-content">
-    <h1>Welcome, Charity!</h1>
-    <div class="form-container">
-        <h2>Available Surplus Food</h2>
-        <table>
+</nav>
+<div class="container">
+    <div class="card">
+        <h3>
+            <a href="retailerDashboard">All Inventories</a>
+            &nbsp;
+            <a href="surplusFoodList">Surplus Food</a>
+        </h3>
+        <table class="table table-striped">
+            <thead>
             <tr>
                 <th>Item Name</th>
                 <th>Quantity</th>
-                <th>Expiration Date</th>
-                <th>Actions</th>
+                <th>Expiry Date</th>
+                <th>Original Price</th>
+                <th>Discount Price</th>
+                <th>Edit</th>
             </tr>
-            <tr>
-                <td>Example Item</td>
-                <td>50</td>
-                <td>2024-08-01</td>
-                <td><button>Claim</button></td>
-            </tr>
-            <!-- Add more items here -->
+            </thead>
+            <tbody>
+            <c:forEach var="item" items="${surplusFoodList}">
+                <tr>
+                    <td>${item.itemName}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.expiryDate}</td>
+                    <td>${item.price}</td>
+                    <td>${item.discountRate}</td>
+                    <td>
+                        <a href="" class="btn btn-link">Claim</a>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
         </table>
     </div>
 </div>

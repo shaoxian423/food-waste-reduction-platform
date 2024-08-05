@@ -10,9 +10,11 @@ public class RetailerInventory {
     private Date expiryDate;
     private double price;
     private double discountRate;
+    private String location;
     private boolean isSurplus;
+    private boolean isForDonation;
 
-    public RetailerInventory(int id, int retailerId, String itemName, int quantity, Date expiryDate, double price, double discountRate, boolean isSurplus) {
+    public RetailerInventory(int id, int retailerId, String itemName, int quantity, Date expiryDate, double price, double discountRate, String location, boolean isSurplus, boolean isForDonation) {
         this.id = id;
         this.retailerId = retailerId;
         this.itemName = itemName;
@@ -20,17 +22,21 @@ public class RetailerInventory {
         this.expiryDate = expiryDate;
         this.price = price;
         this.discountRate = discountRate;
+        this.location = location;
         this.isSurplus = isSurplus;
+        this.isForDonation = isForDonation;
     }
 
-    public RetailerInventory(int retailerId, String itemName, int quantity, Date expiryDate, double price, double discountRate, boolean isSurplus) {
+    public RetailerInventory(int retailerId, String itemName, int quantity, Date expiryDate, double price, double discountRate, String location, boolean isSurplus, boolean isForDonation) {
         this.retailerId = retailerId;
         this.itemName = itemName;
         this.quantity = quantity;
         this.expiryDate = expiryDate;
         this.price = price;
         this.discountRate = discountRate;
+        this.location = location;
         this.isSurplus = isSurplus;
+        this.isForDonation = isForDonation;
     }
 
     // Getters and setters
@@ -98,4 +104,12 @@ public class RetailerInventory {
     public void setSurplus(boolean isSurplus) {
         this.isSurplus = isSurplus;
     }
+
+    public boolean isForDonation() { return isForDonation;}
+
+    public void setForDonation(boolean isForDonation) {this.isForDonation = isForDonation;}
+
+    public String getLocation() {return location;}
+
+    public void setLocation(String location) {this.location = location;}
 }

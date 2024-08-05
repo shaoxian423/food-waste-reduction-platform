@@ -90,8 +90,18 @@
                     <input type="text" class="form-control" id="discountRate" name="discountRate">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="discountRate">Surplus Food:</label>
+                    <label for="location">Location:</label>
+                    <input type="text" class="form-control" id="location" name="location">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="isSurplus">Surplus Food:</label>
                     <input type="checkbox" class="form-control" id="isSurplus" name="isSurplus" value="true">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="isForDonation">Donate Food:</label>
+                    <input type="checkbox" class="form-control" id="isForDonation" name="isForDonation" value="true">
                 </div>
             </div>
             <button type="submit" class="btn btn-success btn-block">Add Inventory</button>
@@ -103,6 +113,8 @@
             <a href="retailerDashboard">All Inventories</a>
             &nbsp;
             <a href="surplusFoodList">Surplus Food</a>
+            &nbsp;
+            <a href="donationFoodList">Donation Food</a>
         </h3>
         <table class="table table-striped">
             <thead>
@@ -112,7 +124,9 @@
                 <th>Expiry Date</th>
                 <th>Price</th>
                 <th>Discount Rate</th>
-                <th>Mark as Surplus</th>
+                <th>Location</th>
+                <th>Surplus</th>
+                <th>Donation</th>
                 <th>Edit</th>
             </tr>
             </thead>
@@ -124,6 +138,7 @@
                     <td>${item.expiryDate}</td>
                     <td>${item.price}</td>
                     <td>${item.discountRate}</td>
+                    <td>${item.location}</td>
                     <td>
                         <c:choose>
                             <c:when test="${item.surplus}">
@@ -131,6 +146,16 @@
                             </c:when>
                             <c:otherwise>
                                 <a href="markAsSurplus?inventoryId=${item.id}" class="btn btn-link">Mark as Surplus</a>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${item.forDonation}">
+                                Donation
+                            </c:when>
+                            <c:otherwise>
+                                <a href="markAsDonation?inventoryId=${item.id}" class="btn btn-link">Mark as Donation</a>
                             </c:otherwise>
                         </c:choose>
                     </td>

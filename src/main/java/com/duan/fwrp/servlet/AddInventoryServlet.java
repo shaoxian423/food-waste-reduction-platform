@@ -34,13 +34,16 @@ public class AddInventoryServlet extends HttpServlet {
         String expiryDateStr = request.getParameter("expiryDate");
         String priceStr = request.getParameter("price");
         String discountRateStr = request.getParameter("discountRate");
+        String location = request.getParameter("location");
         String isSurplusStr = request.getParameter("isSurplus");
+        String isForDonationStr = request.getParameter("isForDonation");
 
         int retailerId = Integer.parseInt(retailerIdStr);
         int quantity = Integer.parseInt(quantityStr);
         double price = Double.parseDouble(priceStr);
         double discountRate = Double.parseDouble(discountRateStr);
         boolean isSurplus = Boolean.parseBoolean(isSurplusStr);
+        boolean isForDonation = Boolean.parseBoolean(isForDonationStr);
 
         // Ensure the date format is correct
         Date expiryDate = null;
@@ -53,7 +56,7 @@ public class AddInventoryServlet extends HttpServlet {
         }
 
         try {
-            inventoryService.addItem(retailerId, itemName, quantity, expiryDate, price, discountRate, isSurplus);
+            inventoryService.addItem(retailerId, itemName, quantity, expiryDate, price, discountRate, location, isSurplus, isForDonation);
             response.sendRedirect("retailerDashboard");
         } catch (SQLException e) {
             e.printStackTrace();

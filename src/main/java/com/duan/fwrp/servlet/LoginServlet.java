@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
                 case "consumer":
                     response.sendRedirect("consumerDashboard");
                     break;
-                case "CharitableOrganization":
+                case "charity":
                     response.sendRedirect("charityDashboard");
                     break;
                 default:

@@ -37,8 +37,18 @@
                     <input type="text" class="form-control" id="discountRate" name="discountRate" value="${inventory.discountRate}">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="discountRate">Surplus Food:</label>
+                    <label for="location">Location:</label>
+                    <input type="text" class="form-control" id="location" name="location" value="${inventory.location}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="isSurplus">Surplus Food:</label>
                     <input type="checkbox" class="form-control" id="isSurplus" name="isSurplus" value="true" ${inventory.surplus ? 'checked' : ''}>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="isForDonation">Donate Food:</label>
+                    <input type="checkbox" class="form-control" id="isForDonation" name="isForDonation" value="true" ${inventory.forDonation ? 'checked' : ''}>
                 </div>
             </div>
             <button type="submit" class="btn btn-success btn-block">Save</button>

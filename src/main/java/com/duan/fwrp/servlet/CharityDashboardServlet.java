@@ -3,7 +3,6 @@ package com.duan.fwrp.servlet;
 import com.duan.fwrp.entity.RetailerInventory;
 import com.duan.fwrp.entity.Users;
 import com.duan.fwrp.service.RetailerInventoryService;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,16 +10,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import java.io.IOException;
 import java.sql.SQLException;
+import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/surplusFoodList")
-public class SurplusFoodListServlet extends HttpServlet {
+@WebServlet("/charityDashboard")
+public class CharityDashboardServlet extends HttpServlet {
     private RetailerInventoryService inventoryService;
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public void init() throws ServletException {
         try {
             inventoryService = new RetailerInventoryService();
         } catch (SQLException e) {
@@ -40,13 +39,12 @@ public class SurplusFoodListServlet extends HttpServlet {
         String id = String.valueOf(user.getId());
         String username = user.getName();
 
-
         try {
-            List<RetailerInventory> inventoryList = inventoryService.getAllSurplusFoodById(Integer.parseInt(id));
-            request.setAttribute("inventoryList", inventoryList);
+            List<RetailerInventory> surplusFoodList = inventoryService.getAllSurplusFood();
+            request.setAttribute("surplusFoodList", surplusFoodList);
             request.setAttribute("username", username);
             request.setAttribute("id", id);
-            request.getRequestDispatcher("retailerDashboard.jsp").forward(request, response);
+            request.getRequestDispatcher("charityDashboard.jsp").forward(request, response);
         } catch (SQLException e) {
             throw new ServletException("Database error", e);
         }

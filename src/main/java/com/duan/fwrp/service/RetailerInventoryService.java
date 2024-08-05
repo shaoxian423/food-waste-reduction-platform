@@ -13,8 +13,8 @@ public class RetailerInventoryService {
         inventoryDAO = new RetailerInventoryDAO();
     }
 
-    public void addItem(int retailerId, String itemName, int quantity, java.sql.Date expiryDate, double price, double discountRate, boolean isSurplus) throws SQLException {
-        RetailerInventory inventory = new RetailerInventory(retailerId, itemName, quantity, expiryDate, price, discountRate, isSurplus);
+    public void addItem(int retailerId, String itemName, int quantity, java.sql.Date expiryDate, double price, double discountRate, String location, boolean isSurplus, boolean isForDonation) throws SQLException {
+        RetailerInventory inventory = new RetailerInventory(retailerId, itemName, quantity, expiryDate, price, discountRate, location, isSurplus, isForDonation);
         inventoryDAO.addInventory(inventory);
     }
 
@@ -30,7 +30,15 @@ public class RetailerInventoryService {
         }
     }
 
-    public List<RetailerInventory> getAllSurplusFood(int id) throws SQLException{
+    public List<RetailerInventory> getAllSurplusFoodById(int id) throws SQLException{
         return inventoryDAO.getAllSurplusInventoriesById(id);
+    }
+
+    public List<RetailerInventory> getAllDonationFoodById(int id) throws SQLException{
+        return inventoryDAO.getAllDonationInventoriesById(id);
+    }
+
+    public List<RetailerInventory> getAllSurplusFood() throws SQLException{
+        return inventoryDAO.getAllSurplusInventories();
     }
 }
