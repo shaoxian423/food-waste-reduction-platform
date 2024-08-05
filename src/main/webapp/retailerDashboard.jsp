@@ -69,25 +69,29 @@
                     <label for="itemName">Item Name:</label>
                     <input type="text" class="form-control" id="itemName" name="itemName">
                 </div>
-            </div>
-            <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="quantity">Quantity:</label>
                     <input type="text" class="form-control" id="quantity" name="quantity">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="expiryDate">Expiry Date:</label>
-                    <input type="text" class="form-control" id="expiryDate" name="expiryDate" placeholder="mm/dd/yyyy">
-                </div>
             </div>
             <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="expiryDate">Expiry Date:</label>
+                    <input type="text" class="form-control" id="expiryDate" name="expiryDate" placeholder="yyyy-mm-dd">
+                </div>
                 <div class="form-group col-md-6">
                     <label for="price">Price:</label>
                     <input type="text" class="form-control" id="price" name="price">
                 </div>
+            </div>
+            <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="discountRate">Discount Rate:</label>
                     <input type="text" class="form-control" id="discountRate" name="discountRate">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="discountRate">Surplus Food:</label>
+                    <input type="checkbox" class="form-control" id="isSurplus" name="isSurplus" value="true">
                 </div>
             </div>
             <button type="submit" class="btn btn-success btn-block">Add Inventory</button>
@@ -105,6 +109,7 @@
                 <th>Price</th>
                 <th>Discount Rate</th>
                 <th>Mark as Surplus</th>
+                <th>Edit</th>
             </tr>
             </thead>
             <tbody>
@@ -121,10 +126,14 @@
                                 Surplus
                             </c:when>
                             <c:otherwise>
-                                <a href="markAsSurplus?inventoryId=${item.id}&discountedRate=${item.discountRate}&price=${item.price}" class="btn btn-link">Mark as Surplus</a>
+                                <a href="markAsSurplus?inventoryId=${item.id}" class="btn btn-link">Mark as Surplus</a>
                             </c:otherwise>
                         </c:choose>
+                    </td>
                     <td>
+                        <a href="editInventory?inventoryId=${item.id}" class="btn btn-link">Edit</a>
+                        <a href="deleteInventory?inventoryId=${item.id}" class="btn btn-link">Delete</a>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>

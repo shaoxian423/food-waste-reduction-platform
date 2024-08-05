@@ -1,5 +1,6 @@
 package com.duan.fwrp.servlet;
 
+import com.duan.fwrp.dao.RetailerInventoryDAO;
 import com.duan.fwrp.dao.SurplusFoodDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,15 +17,11 @@ public class MarkSurplusServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int inventoryId = Integer.parseInt(request.getParameter("inventoryId"));
-        System.out.println(inventoryId);
-        double price = Double.parseDouble(request.getParameter("price"));
-        double discountedRate = Double.parseDouble(request.getParameter("discountedRate"));
-        double discountedPrice = price * discountedRate;
 
 
-        SurplusFoodDAO surplusFoodDAO = new SurplusFoodDAO();
+        RetailerInventoryDAO retailerInventoryDAO = new RetailerInventoryDAO();
         try {
-            surplusFoodDAO.markAsSurplus(inventoryId, discountedPrice);
+            retailerInventoryDAO.markIsSurplusTrueById(inventoryId);
             response.sendRedirect("retailerDashboard"); // Redirect to the retailer dashboard after marking as surplus
         } catch (SQLException e) {
             e.printStackTrace();

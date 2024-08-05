@@ -11,8 +11,8 @@ public class RetailerInventoryDAO {
 
     public void addInventory(RetailerInventory inventory) throws SQLException {
         String sql = "INSERT INTO retailer_inventory (retailer_id, item_name, quantity, expiry_date, price, discount_rate, is_surplus) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DatabaseUtil.getConnection()){
+            PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, inventory.getRetailerId());
             stmt.setString(2, inventory.getItemName());
             stmt.setInt(3, inventory.getQuantity());
@@ -105,6 +105,15 @@ public class RetailerInventoryDAO {
             stmt.setDouble(5, inventory.getDiscountRate());
             stmt.setBoolean(6, inventory.isSurplus());
             stmt.setInt(7, inventory.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void markIsSurplusTrueById(int itemId) throws SQLException {
+        String sql = "UPDATE retailer_inventory SET is_surplus = 1 WHERE id = ?";
+        try (Connection connection = DatabaseUtil.getConnection()){
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, itemId);
             stmt.executeUpdate();
         }
     }

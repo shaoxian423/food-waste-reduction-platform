@@ -89,3 +89,70 @@ CREATE TABLE SurplusFood (
                              discount_price DECIMAL(10, 2),
                              FOREIGN KEY (inventory_id) REFERENCES Retailer_Inventory(id)
 );
+
+DELIMITER $$
+
+CREATE TRIGGER after_update_is_surplus
+    AFTER UPDATE ON Retailer_Inventory
+    FOR EACH ROW
+BEGIN
+    DECLARE discount_price DECIMAL(10, 2);
+
+    -- If is_surplus is changed from 0 to 1, insert into SurplusFood
+    IF NEW.is_surplus = 1 AND OLD.is_surplus = 0 THEN
+        SET discount_price = NEW.price * NEW.discount_rate;
+
+        INSERT INTO SurplusFood (inventory_id, discount_price)
+        VALUES (NEW.id, discount_price);
+    END IF;
+
+    -- If is_surplus is changed from 1 to 0, delete from SurplusFood
+    IF NEW.is_surplus = 0 AND OLD.is_surplus = 1 THEN
+        DELETE FROM SurplusFood WHERE inventory_id = NEW.id;
+    END IF;
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER after_insert_is_surplus
+    AFTER INSERT ON Retailer_Inventory
+    FOR EACH ROW
+BEGIN
+    DECLARE discount_price DECIMAL(10, 2);
+
+    -- If is_surplus is true, insert into SurplusFood
+    IF NEW.is_surplus = 1 THEN
+        SET discount_price = NEW.price * NEW.discount_rate;
+
+        INSERT INTO SurplusFood (inventory_id, discount_price)
+        VALUES (NEW.id, discount_price);
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- Assuming the Retailer_Inventory and SurplusFood tables already exist
+
+DELIMITER $$
+
+-- Trigger to handle changes in discount_rate or price
+CREATE TRIGGER after_update_discount_rate_or_price
+    AFTER UPDATE ON Retailer_Inventory
+    FOR EACH ROW
+BEGIN
+    DECLARE new_discount_price DECIMAL(10, 2);
+
+    -- Check if either discount_rate or price has changed
+    IF NEW.discount_rate != OLD.discount_rate OR NEW.price != OLD.price THEN
+        SET new_discount_price = NEW.price * NEW.discount_rate;
+
+        -- Update discount_price in SurplusFood table
+        UPDATE SurplusFood
+        SET discount_price = new_discount_price
+        WHERE inventory_id = NEW.id AND NEW.is_surplus = 1;
+    END IF;
+END $$
+
+DELIMITER ;

@@ -1,6 +1,7 @@
 package com.duan.fwrp.servlet;
 
-import com.duan.fwrp.service.RetailerInventoryService;
+import com.duan.fwrp.dao.RetailerInventoryDAO;
+import com.duan.fwrp.entity.RetailerInventory;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,21 +14,10 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-@WebServlet("/addInventory")
-public class AddInventoryServlet extends HttpServlet {
-    private RetailerInventoryService inventoryService;
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        try {
-            inventoryService = new RetailerInventoryService();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+@WebServlet("/saveInventory")
+public class SaveInventoryServlet extends HttpServlet{
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idStr = request.getParameter("id");
         String retailerIdStr = request.getParameter("retailerId");
         String itemName = request.getParameter("itemName");
         String quantityStr = request.getParameter("quantity");
@@ -36,6 +26,7 @@ public class AddInventoryServlet extends HttpServlet {
         String discountRateStr = request.getParameter("discountRate");
         String isSurplusStr = request.getParameter("isSurplus");
 
+        int id = Integer.parseInt(idStr);
         int retailerId = Integer.parseInt(retailerIdStr);
         int quantity = Integer.parseInt(quantityStr);
         double price = Double.parseDouble(priceStr);
@@ -52,12 +43,14 @@ public class AddInventoryServlet extends HttpServlet {
             // handle error appropriately
         }
 
-        try {
-            inventoryService.addItem(retailerId, itemName, quantity, expiryDate, price, discountRate, isSurplus);
+        RetailerInventory inventory = new RetailerInventory(id, retailerId, itemName, quantity, expiryDate, price, discountRate, isSurplus);
+        RetailerInventoryDAO inventoryDAO = new RetailerInventoryDAO();
+
+        try{
+            inventoryDAO.updateInventory(inventory);
             response.sendRedirect("retailerDashboard");
-        } catch (SQLException e) {
+        }catch(SQLException e){
             e.printStackTrace();
-            response.sendRedirect("retailerDashboard.jsp?error=Database error, please try again.");
         }
     }
 }
