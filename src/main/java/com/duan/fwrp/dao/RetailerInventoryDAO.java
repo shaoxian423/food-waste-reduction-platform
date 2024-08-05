@@ -71,6 +71,30 @@ public class RetailerInventoryDAO {
         return inventories;
     }
 
+    public List<RetailerInventory> getAllSurplusInventoriesById(int id) throws SQLException {
+        List<RetailerInventory> inventories = new ArrayList<>();
+        String sql = "SELECT * FROM retailer_inventory WHERE retailer_id = ? AND is_surplus = 1";
+        try (Connection connection = DatabaseUtil.getConnection();){
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                RetailerInventory inventory = new RetailerInventory(
+                        rs.getInt("id"),
+                        rs.getInt("retailer_id"),
+                        rs.getString("item_name"),
+                        rs.getInt("quantity"),
+                        rs.getDate("expiry_date"),
+                        rs.getDouble("price"),
+                        rs.getDouble("discount_rate"),
+                        rs.getBoolean("is_surplus")
+                );
+                inventories.add(inventory);
+            }
+        }
+        return inventories;
+    }
+
     public RetailerInventory getInventoryById(int itemId) throws SQLException {
         String sql = "SELECT * FROM retailer_inventory WHERE id = ?";
         try (Connection connection = DatabaseUtil.getConnection();

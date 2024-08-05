@@ -16,13 +16,13 @@
     </taglib>
   </jsp-config>
 
-  <servlet>
-    <servlet-name>RetailerDashboardServlet</servlet-name>
-    <servlet-class>com.duan.fwrp.servlet.RetailerDashboardServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>RetailerDashboardServlet</servlet-name>
-    <url-pattern>/retailerDashboard</url-pattern>
-  </servlet-mapping>
+<!--  <servlet>-->
+<!--    <servlet-name>RetailerDashboardServlet</servlet-name>-->
+<!--    <servlet-class>com.duan.fwrp.servlet.RetailerDashboardServlet</servlet-class>-->
+<!--  </servlet>-->
+<!--  <servlet-mapping>-->
+<!--    <servlet-name>RetailerDashboardServlet</servlet-name>-->
+<!--    <url-pattern>/retailerDashboard</url-pattern>-->
+<!--  </servlet-mapping>-->
 
 </web-app>

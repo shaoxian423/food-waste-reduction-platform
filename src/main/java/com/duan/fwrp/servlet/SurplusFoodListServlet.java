@@ -1,27 +1,26 @@
 package com.duan.fwrp.servlet;
 
 import com.duan.fwrp.entity.RetailerInventory;
+import com.duan.fwrp.entity.Users;
 import com.duan.fwrp.service.RetailerInventoryService;
-
-import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import com.duan.fwrp.entity.Users;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/retailerDashboard")
-public class RetailerDashboardServlet extends HttpServlet {
+@WebServlet("/surplusFoodList")
+public class SurplusFoodListServlet extends HttpServlet {
     private RetailerInventoryService inventoryService;
 
     @Override
-    public void init() throws ServletException {
+    public void init(ServletConfig config) throws ServletException {
         try {
             inventoryService = new RetailerInventoryService();
         } catch (SQLException e) {
@@ -43,7 +42,7 @@ public class RetailerDashboardServlet extends HttpServlet {
 
 
         try {
-            List<RetailerInventory> inventoryList = inventoryService.getAllItems(Integer.parseInt(id));
+            List<RetailerInventory> inventoryList = inventoryService.getAllSurplusFood(Integer.parseInt(id));
             request.setAttribute("inventoryList", inventoryList);
             request.setAttribute("username", username);
             request.setAttribute("id", id);
@@ -52,5 +51,4 @@ public class RetailerDashboardServlet extends HttpServlet {
             throw new ServletException("Database error", e);
         }
     }
-
 }

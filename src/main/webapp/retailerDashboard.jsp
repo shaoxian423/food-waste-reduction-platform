@@ -99,7 +99,11 @@
     </div>
     <br>
     <div class="card">
-        <h3>Inventory List</h3>
+        <h3>
+            <a href="retailerDashboard">All Inventories</a>
+            &nbsp;
+            <a href="surplusFoodList">Surplus Food</a>
+        </h3>
         <table class="table table-striped">
             <thead>
             <tr>

@@ -29,4 +29,8 @@ public class RetailerInventoryService {
             inventoryDAO.updateInventory(item);
         }
     }
+
+    public List<RetailerInventory> getAllSurplusFood(int id) throws SQLException{
+        return inventoryDAO.getAllSurplusInventoriesById(id);
+    }
 }
