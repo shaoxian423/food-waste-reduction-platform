@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 
         if (user != null && user.getPassword().equals(password)) {
             HttpSession session = request.getSession();
-            session.setAttribute("userType", user.getUserType());
+            session.setAttribute("user", user);
 
             switch (user.getUserType()) {
                 case "retailer":

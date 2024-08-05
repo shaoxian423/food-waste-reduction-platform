@@ -50,11 +50,11 @@
             </li>
         </ul>
         <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Welcome, ${username}!</a>
+                </li>
             <li class="nav-item">
-                <a class="nav-link" href="register.jsp">Register</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="login.jsp">Login</a>
+                <a class="nav-link" href="login.jsp">Sign Out</a>
             </li>
         </ul>
     </div>
