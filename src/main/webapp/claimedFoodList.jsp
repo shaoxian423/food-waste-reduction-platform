@@ -78,32 +78,18 @@
                 <th>Item Name</th>
                 <th>Quantity</th>
                 <th>Expiry Date</th>
-                <th>Price</th>
-                <th>Discount Rate</th>
                 <th>Location</th>
-                <th>Claim Quantity</th>
-                <th>Claim</th>
+                <th>Claim Time</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="item" items="${donationFoodList}">
+            <c:forEach var="item" items="${claimedFoodList}">
                 <tr>
                     <td>${item.itemName}</td>
                     <td>${item.quantity}</td>
                     <td>${item.expiryDate}</td>
-                    <td>${item.price}</td>
-                    <td>${item.discountRate}</td>
                     <td>${item.location}</td>
-                    <td>
-                        <form action="claimFood" method="post">
-                            <input type="hidden" name="inventoryId" value="${item.id}">
-                            <input type="hidden" name="userId" value="${id}">
-                            <input type="number" name="quantity" min="1" max="${item.quantity}" required>
-                    </td>
-                    <td>
-                        <button type="submit" class="btn btn-link">Claim</button>
-                        </form>
-                    </td>
+                    <td>${item.timestamp}</td>
                 </tr>
             </c:forEach>
             </tbody>

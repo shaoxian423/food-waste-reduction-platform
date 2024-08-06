@@ -3,6 +3,9 @@ package com.duan.fwrp.dao;
 import java.sql.*;
 import com.duan.fwrp.entity.Transaction;
 import com.duan.fwrp.util.DatabaseUtil;
+import com.duan.fwrp.entity.TransactionInventory;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TransactionDAO {
 
@@ -16,5 +19,26 @@ public class TransactionDAO {
             preparedStatement.setInt(3, transaction.getQuantity());
             preparedStatement.executeUpdate();
         }
+    }
+
+    public List<TransactionInventory> getAllClaimedFoodByUserId(int id) throws SQLException{
+        List<TransactionInventory> transactionInventories = new ArrayList<TransactionInventory>();
+        String sql = "SELECT retailer_inventory.item_name, transaction.quantity, retailer_inventory.expiry_date, retailer_inventory.location, transaction.timestamp FROM transaction JOIN retailer_inventory ON(transaction.inventory_id =retailer_inventory.id) WHERE transaction.user_id=?";
+        try (Connection connection = DatabaseUtil.getConnection()){
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                TransactionInventory transactionInventory = new TransactionInventory(
+                        rs.getString("item_name"),
+                        rs.getInt("quantity"),
+                        rs.getDate("expiry_date"),
+                        rs.getString("location"),
+                        rs.getTimestamp("timestamp")
+                );
+                transactionInventories.add(transactionInventory);
+            }
+        }
+        return transactionInventories;
     }
 }
