@@ -1,16 +1,11 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: SX Duan
-  Date: 7/25/2024
-  Time: 1:51 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charity Dashboard - Food Waste Reduction Platform</title>
+    <title>Retailer Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .navbar {
@@ -65,11 +60,17 @@
     </div>
 </nav>
 <div class="container">
+    <!-- Error Message Alert Box -->
+    <c:if test="${not empty errorMessage}">
+        <div class="alert alert-danger">
+                ${errorMessage}
+        </div>
+    </c:if>
     <div class="card">
         <h3>
-            <a href="retailerDashboard">All Inventories</a>
+            <a href="">All Donations</a>
             &nbsp;
-            <a href="surplusFoodList">Surplus Food</a>
+            <a href="">Claimed Food</a>
         </h3>
         <table class="table table-striped">
             <thead>
@@ -77,21 +78,31 @@
                 <th>Item Name</th>
                 <th>Quantity</th>
                 <th>Expiry Date</th>
-                <th>Original Price</th>
-                <th>Discount Price</th>
-                <th>Edit</th>
+                <th>Price</th>
+                <th>Discount Rate</th>
+                <th>Location</th>
+                <th>Claim Quantity</th>
+                <th>Claim</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="item" items="${surplusFoodList}">
+            <c:forEach var="item" items="${donationFoodList}">
                 <tr>
                     <td>${item.itemName}</td>
                     <td>${item.quantity}</td>
                     <td>${item.expiryDate}</td>
                     <td>${item.price}</td>
                     <td>${item.discountRate}</td>
+                    <td>${item.location}</td>
                     <td>
-                        <a href="" class="btn btn-link">Claim</a>
+                        <form action="claimFood" method="post">
+                            <input type="hidden" name="inventoryId" value="${item.id}">
+                            <input type="hidden" name="userId" value="${id}">
+                            <input type="number" name="quantity" min="1" max="${item.quantity}" required>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-link">Claim</button>
+                        </form>
                     </td>
                 </tr>
             </c:forEach>

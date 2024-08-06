@@ -213,7 +213,7 @@ public class RetailerInventoryDAO {
                         rs.getDate("expiry_date"),
                         rs.getDouble("price"),
                         rs.getDouble("discount_rate"),
-                        rs.getString("locaation"),
+                        rs.getString("location"),
                         rs.getBoolean("is_surplus"),
                         rs.getBoolean("is_for_donation")
                 );
@@ -221,5 +221,44 @@ public class RetailerInventoryDAO {
             }
         }
         return inventories;
+    }
+
+    public List<RetailerInventory> getAllDonationInventories() throws SQLException {
+        List<RetailerInventory> inventories = new ArrayList<>();
+        String sql = "SELECT * FROM retailer_inventory WHERE is_for_donation = 1";
+        try (Connection connection = DatabaseUtil.getConnection();){
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                RetailerInventory inventory = new RetailerInventory(
+                        rs.getInt("id"),
+                        rs.getInt("retailer_id"),
+                        rs.getString("item_name"),
+                        rs.getInt("quantity"),
+                        rs.getDate("expiry_date"),
+                        rs.getDouble("price"),
+                        rs.getDouble("discount_rate"),
+                        rs.getString("location"),
+                        rs.getBoolean("is_surplus"),
+                        rs.getBoolean("is_for_donation")
+                );
+                inventories.add(inventory);
+            }
+        }
+        return inventories;
+    }
+
+    public int getQuantityById(int itemId) throws SQLException {
+        int quantity = 0;
+        String sql = "SELECT quantity FROM retailer_inventory WHERE id = ?";
+        try (Connection connection = DatabaseUtil.getConnection();){
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, itemId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                quantity = rs.getInt("quantity");
+            }
+        }
+        return quantity;
     }
 }

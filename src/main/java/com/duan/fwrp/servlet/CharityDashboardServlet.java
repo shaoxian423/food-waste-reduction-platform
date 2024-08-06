@@ -40,8 +40,8 @@ public class CharityDashboardServlet extends HttpServlet {
         String username = user.getName();
 
         try {
-            List<RetailerInventory> surplusFoodList = inventoryService.getAllSurplusFood();
-            request.setAttribute("surplusFoodList", surplusFoodList);
+            List<RetailerInventory> donationFoodList = inventoryService.getAllDonationFood();
+            request.setAttribute("donationFoodList", donationFoodList);
             request.setAttribute("username", username);
             request.setAttribute("id", id);
             request.getRequestDispatcher("charityDashboard.jsp").forward(request, response);

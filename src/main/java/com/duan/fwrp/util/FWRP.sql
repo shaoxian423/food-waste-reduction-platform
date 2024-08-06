@@ -28,10 +28,10 @@ CREATE TABLE retailer_inventory (
 CREATE TABLE transaction (
                              id INT AUTO_INCREMENT PRIMARY KEY,
                              timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                             consumer_id INT,
+                             user_id INT,
                              inventory_id INT,
                              quantity INT NOT NULL,
-                             FOREIGN KEY (consumer_id) REFERENCES Users(id),
+                             FOREIGN KEY (user_id) REFERENCES Users(id),
                              FOREIGN KEY (inventory_id) REFERENCES Retailer_Inventory(id)
 );
 
@@ -118,3 +118,16 @@ CREATE EVENT update_surplus_status
 //
 DELIMITER ;
 
+DELIMITER //
+
+CREATE TRIGGER deduct_quantity_on_insert
+    AFTER INSERT ON transaction
+    FOR EACH ROW
+BEGIN
+    UPDATE retailer_inventory
+    SET quantity = quantity - NEW.quantity
+    WHERE id = NEW.inventory_id;
+END;
+//
+
+DELIMITER ;

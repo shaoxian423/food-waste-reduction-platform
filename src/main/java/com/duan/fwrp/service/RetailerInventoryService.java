@@ -41,4 +41,13 @@ public class RetailerInventoryService {
     public List<RetailerInventory> getAllSurplusFood() throws SQLException{
         return inventoryDAO.getAllSurplusInventories();
     }
+
+    public List<RetailerInventory> getAllDonationFood() throws SQLException{
+        return inventoryDAO.getAllDonationInventories();
+    }
+
+    public int getQuantityById(int id) throws SQLException {
+        return inventoryDAO.getQuantityById(id);
+    }
+
 }
