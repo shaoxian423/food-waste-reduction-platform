@@ -7,11 +7,22 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RetailerInventoryDAO {
+/** Represents an inventory DAO.
+ * @author Binglei Cai
+ * @author Shaoxian Duan
+ * @author Jiangling Liang
+ * @version 1.0
+*  @built on Aug 8, 2024
+*/
 
+public class RetailerInventoryDAO {
+    /**
+     * @param inventory
+     * @throws SQLException
+     */
     public void addInventory(RetailerInventory inventory) throws SQLException {
         String sql = "INSERT INTO retailer_inventory (retailer_id, item_name, quantity, expiry_date, price, discount_rate, location, is_surplus, is_for_donation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection connection = DatabaseUtil.getConnection()){
+        try (Connection connection = DatabaseUtil.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, inventory.getRetailerId());
             stmt.setString(2, inventory.getItemName());
@@ -26,12 +37,17 @@ public class RetailerInventoryDAO {
         }
     }
 
+    
+    /** 
+     * @return List<RetailerInventory>
+     * @throws SQLException
+     */
     public List<RetailerInventory> getAllRetailerInventories() throws SQLException {
         List<RetailerInventory> inventories = new ArrayList<>();
         String sql = "SELECT * FROM retailer_inventory";
         try (Connection connection = DatabaseUtil.getConnection();
-             Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 RetailerInventory inventory = new RetailerInventory(
                         rs.getInt("id"),
@@ -43,18 +59,23 @@ public class RetailerInventoryDAO {
                         rs.getDouble("discount_rate"),
                         rs.getString("location"),
                         rs.getBoolean("is_surplus"),
-                        rs.getBoolean("for_donation")
-                );
+                        rs.getBoolean("for_donation"));
                 inventories.add(inventory);
             }
         }
         return inventories;
     }
 
-    public List<RetailerInventory> getAllRetailerInventoriesById(int id) throws SQLException{
+    
+    /** 
+     * @param id
+     * @return List<RetailerInventory>
+     * @throws SQLException
+     */
+    public List<RetailerInventory> getAllRetailerInventoriesById(int id) throws SQLException {
         List<RetailerInventory> inventories = new ArrayList<>();
         String sql = "SELECT * FROM retailer_inventory WHERE retailer_id = ?";
-        try (Connection connection = DatabaseUtil.getConnection();){
+        try (Connection connection = DatabaseUtil.getConnection();) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -69,8 +90,7 @@ public class RetailerInventoryDAO {
                         rs.getDouble("discount_rate"),
                         rs.getString("location"),
                         rs.getBoolean("is_surplus"),
-                        rs.getBoolean("is_for_donation")
-                );
+                        rs.getBoolean("is_for_donation"));
                 inventories.add(inventory);
             }
         }
@@ -80,7 +100,7 @@ public class RetailerInventoryDAO {
     public List<RetailerInventory> getAllSurplusInventoriesById(int id) throws SQLException {
         List<RetailerInventory> inventories = new ArrayList<>();
         String sql = "SELECT * FROM retailer_inventory WHERE retailer_id = ? AND is_surplus = 1";
-        try (Connection connection = DatabaseUtil.getConnection();){
+        try (Connection connection = DatabaseUtil.getConnection();) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -95,8 +115,7 @@ public class RetailerInventoryDAO {
                         rs.getDouble("discount_rate"),
                         rs.getString("location"),
                         rs.getBoolean("is_surplus"),
-                        rs.getBoolean("is_for_donation")
-                );
+                        rs.getBoolean("is_for_donation"));
                 inventories.add(inventory);
             }
         }
@@ -106,7 +125,7 @@ public class RetailerInventoryDAO {
     public List<RetailerInventory> getAllDonationInventoriesById(int id) throws SQLException {
         List<RetailerInventory> inventories = new ArrayList<>();
         String sql = "SELECT * FROM retailer_inventory WHERE retailer_id = ? AND is_for_donation = 1";
-        try (Connection connection = DatabaseUtil.getConnection();){
+        try (Connection connection = DatabaseUtil.getConnection();) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -121,8 +140,7 @@ public class RetailerInventoryDAO {
                         rs.getDouble("discount_rate"),
                         rs.getString("location"),
                         rs.getBoolean("is_surplus"),
-                        rs.getBoolean("is_for_donation")
-                );
+                        rs.getBoolean("is_for_donation"));
                 inventories.add(inventory);
             }
         }
@@ -132,7 +150,7 @@ public class RetailerInventoryDAO {
     public RetailerInventory getInventoryById(int itemId) throws SQLException {
         String sql = "SELECT * FROM retailer_inventory WHERE id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, itemId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -146,8 +164,7 @@ public class RetailerInventoryDAO {
                             rs.getDouble("discount_rate"),
                             rs.getString("location"),
                             rs.getBoolean("is_surplus"),
-                            rs.getBoolean("is_for_donation")
-                    );
+                            rs.getBoolean("is_for_donation"));
                 }
             }
         }
@@ -157,7 +174,7 @@ public class RetailerInventoryDAO {
     public void updateInventory(RetailerInventory inventory) throws SQLException {
         String sql = "UPDATE retailer_inventory SET item_name = ?, quantity = ?, expiry_date = ?, price = ?, discount_rate = ?, location = ?, is_surplus = ?, is_for_donation = ? WHERE id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, inventory.getItemName());
             stmt.setInt(2, inventory.getQuantity());
             stmt.setDate(3, inventory.getExpiryDate());
@@ -173,7 +190,7 @@ public class RetailerInventoryDAO {
 
     public void markIsSurplusTrueById(int itemId) throws SQLException {
         String sql = "UPDATE retailer_inventory SET is_surplus = 1 WHERE id = ?";
-        try (Connection connection = DatabaseUtil.getConnection()){
+        try (Connection connection = DatabaseUtil.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, itemId);
             stmt.executeUpdate();
@@ -182,7 +199,7 @@ public class RetailerInventoryDAO {
 
     public void markIsDonationTrueById(int itemId) throws SQLException {
         String sql = "UPDATE retailer_inventory SET is_for_donation = 1 WHERE id = ?";
-        try (Connection connection = DatabaseUtil.getConnection()){
+        try (Connection connection = DatabaseUtil.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, itemId);
             stmt.executeUpdate();
@@ -191,7 +208,7 @@ public class RetailerInventoryDAO {
 
     public void deleteInventoryById(int itemId) throws SQLException {
         String sql = "DELETE FROM retailer_inventory WHERE id = ?";
-        try (Connection connection = DatabaseUtil.getConnection()){
+        try (Connection connection = DatabaseUtil.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, itemId);
             stmt.executeUpdate();
@@ -201,7 +218,7 @@ public class RetailerInventoryDAO {
     public List<RetailerInventory> getAllSurplusInventories() throws SQLException {
         List<RetailerInventory> inventories = new ArrayList<>();
         String sql = "SELECT * FROM retailer_inventory WHERE is_surplus = 1";
-        try (Connection connection = DatabaseUtil.getConnection();){
+        try (Connection connection = DatabaseUtil.getConnection();) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -215,8 +232,7 @@ public class RetailerInventoryDAO {
                         rs.getDouble("discount_rate"),
                         rs.getString("location"),
                         rs.getBoolean("is_surplus"),
-                        rs.getBoolean("is_for_donation")
-                );
+                        rs.getBoolean("is_for_donation"));
                 inventories.add(inventory);
             }
         }
@@ -226,7 +242,7 @@ public class RetailerInventoryDAO {
     public List<RetailerInventory> getAllDonationInventories() throws SQLException {
         List<RetailerInventory> inventories = new ArrayList<>();
         String sql = "SELECT * FROM retailer_inventory WHERE is_for_donation = 1";
-        try (Connection connection = DatabaseUtil.getConnection();){
+        try (Connection connection = DatabaseUtil.getConnection();) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -240,8 +256,7 @@ public class RetailerInventoryDAO {
                         rs.getDouble("discount_rate"),
                         rs.getString("location"),
                         rs.getBoolean("is_surplus"),
-                        rs.getBoolean("is_for_donation")
-                );
+                        rs.getBoolean("is_for_donation"));
                 inventories.add(inventory);
             }
         }
@@ -251,7 +266,7 @@ public class RetailerInventoryDAO {
     public int getQuantityById(int itemId) throws SQLException {
         int quantity = 0;
         String sql = "SELECT quantity FROM retailer_inventory WHERE id = ?";
-        try (Connection connection = DatabaseUtil.getConnection();){
+        try (Connection connection = DatabaseUtil.getConnection();) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, itemId);
             ResultSet rs = stmt.executeQuery();
