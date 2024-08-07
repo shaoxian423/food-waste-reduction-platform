@@ -18,6 +18,7 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String phone = request.getParameter("phone");
+        String communicationMethod = request.getParameter("communicationMethod");
         String userType = request.getParameter("userType");
 
         Users user = new Users();
@@ -26,6 +27,7 @@ public class RegisterServlet extends HttpServlet {
         user.setPassword(password);
         user.setPhone(phone);
         user.setUserType(userType);
+        user.setCommunicationMethod(communicationMethod);
 
         UsersDAO usersDAO = new UsersDAO();
 

@@ -67,6 +67,24 @@
         </div>
     </c:if>
     <div class="card">
+        <h2 class="text-center">Subscribe Notification</h2>
+        <form action="charitySubscribe" method="post">
+            <input type="hidden" name="userId" value="${id}" /> <!-- Hidden field to preserve the "id" parameter -->
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="location">Location:</label>
+                    <input type="text" class="form-control" id="location" name="location">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="foodPreference">Food Preference:</label>
+                    <input type="text" class="form-control" id="foodPreference" name="foodPreference">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success btn-block">Subscribe</button>
+        </form>
+    </div>
+    <br>
+    <div class="card">
         <h3>
             <a href="charityDashboard">All Donations</a>
             &nbsp;

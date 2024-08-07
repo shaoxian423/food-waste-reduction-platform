@@ -12,8 +12,8 @@ public class UserSubscriptionService {
     public UserSubscriptionService() {
         subscriptionDAO = new SubscriptionDAO();
     }
-    public void addSubscription(int userId, String communicationMethod, String location, String foodPreference) throws SQLException {
-        UserSubscription subscription = new UserSubscription(userId, communicationMethod, location, foodPreference);
+    public void addSubscription(int userId, String location, String foodPreference) throws SQLException {
+        UserSubscription subscription = new UserSubscription(userId, location, foodPreference);
         subscriptionDAO.insertSubscription(subscription);
     }
 }

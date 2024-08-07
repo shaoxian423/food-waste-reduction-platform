@@ -10,13 +10,12 @@ import java.util.List;
 public class SubscriptionDAO {
 
     public void insertSubscription(UserSubscription subscription) throws SQLException {
-        String sql = "INSERT INTO user_subscription(user_id, communication_method, location, food_preference) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO user_subscription(user_id, location, food_preference) VALUES (?, ?, ?)";
         Connection connection = DatabaseUtil.getConnection();
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setInt(1, subscription.getUserId());
-        stmt.setString(2, subscription.getCommunicationMethod());
-        stmt.setString(3, subscription.getLocation());
-        stmt.setString(4, subscription.getFoodPreference());
+        stmt.setString(2, subscription.getLocation());
+        stmt.setString(3, subscription.getFoodPreference());
         stmt.executeUpdate();
     }
 }

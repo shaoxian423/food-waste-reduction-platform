@@ -9,14 +9,15 @@ import java.util.List;
 public class UsersDAO {
 
     public void addUser(Users user) throws SQLException {
-        String sql = "INSERT INTO Users (name, email, password, phone, user_type) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Users (name, email, password, phone, communication_method, user_type) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getEmail());
             stmt.setString(3, user.getPassword());
             stmt.setString(4, user.getPhone());
-            stmt.setString(5, user.getUserType());
+            stmt.setString(5, user.getCommunicationMethod());
+            stmt.setString(6, user.getUserType());
             stmt.executeUpdate();
         }
     }
@@ -35,6 +36,7 @@ public class UsersDAO {
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setPhone(rs.getString("phone"));
+                user.setCommunicationMethod(rs.getString("communication_method"));
                 user.setUserType(rs.getString("user_type"));
             }
         }
@@ -42,15 +44,16 @@ public class UsersDAO {
     }
 
     public void updateUser(Users user) throws SQLException {
-        String sql = "UPDATE Users SET name = ?, email = ?, password = ?, phone = ?, user_type = ? WHERE id = ?";
+        String sql = "UPDATE Users SET name = ?, email = ?, password = ?, phone = ?, communication_method = ?, user_type = ? WHERE id = ?";
         try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getEmail());
             stmt.setString(3, user.getPassword());
             stmt.setString(4, user.getPhone());
-            stmt.setString(5, user.getUserType());
-            stmt.setInt(6, user.getId());
+            stmt.setString(5, user.getCommunicationMethod());
+            stmt.setString(6, user.getUserType());
+            stmt.setInt(7, user.getId());
             stmt.executeUpdate();
         }
     }
@@ -77,6 +80,7 @@ public class UsersDAO {
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setPhone(rs.getString("phone"));
+                user.setCommunicationMethod(rs.getString("communication_method"));
                 user.setUserType(rs.getString("user_type"));
                 usersList.add(user);
             }
@@ -97,6 +101,7 @@ public class UsersDAO {
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
                     user.setPhone(rs.getString("phone"));
+                    user.setCommunicationMethod(rs.getString("communication_method"));
                     user.setUserType(rs.getString("user_type"));
                     return user;
                 }
@@ -106,14 +111,15 @@ public class UsersDAO {
     }
 
     public void save(Users user) throws SQLException {
-        String sql = "INSERT INTO users (name, email, password, phone, user_type) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (name, email, password, phone, communication_method, user_type) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getEmail());
             stmt.setString(3, user.getPassword());
             stmt.setString(4, user.getPhone());
-            stmt.setString(5, user.getUserType());
+            stmt.setString(5, user.getCommunicationMethod());
+            stmt.setString(6, user.getUserType());
             stmt.executeUpdate();
         }
     }
@@ -132,6 +138,7 @@ public class UsersDAO {
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
                     user.setPhone(rs.getString("phone"));
+                    user.setCommunicationMethod(rs.getString("communication_method"));
                     user.setUserType(rs.getString("user_type"));
                 }
             }

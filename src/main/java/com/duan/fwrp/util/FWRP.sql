@@ -8,6 +8,7 @@ CREATE TABLE users (
                        email VARCHAR(100) NOT NULL UNIQUE,
                        password VARCHAR(100) NOT NULL,
                        phone VARCHAR(100),
+                       communication_method ENUM('email', 'phone'),
                        user_type ENUM('retailer', 'consumer', 'charity') NOT NULL
 );
 
@@ -38,7 +39,6 @@ CREATE TABLE transaction (
 CREATE TABLE user_subscription (
                                    id INT AUTO_INCREMENT PRIMARY KEY,
                                    user_id INT,
-                                   communication_method ENUM('email', 'phone'),
                                    location VARCHAR(100),
                                    food_preference VARCHAR(100),
                                    FOREIGN KEY (user_id) REFERENCES Users(id)
@@ -48,6 +48,7 @@ CREATE TABLE notifications (
                                id INT AUTO_INCREMENT PRIMARY KEY,
                                user_id INT,
                                inventory_id INT,
+                               processed BOOLEAN DEFAULT FALSE,
                                FOREIGN KEY (user_id) REFERENCES Users(id),
                                FOREIGN KEY (inventory_id) REFERENCES Retailer_Inventory(id)
 );
@@ -118,6 +119,7 @@ CREATE EVENT update_surplus_status
 //
 DELIMITER ;
 
+DROP TRIGGER IF EXISTS deduct_quantity_on_insert;
 DELIMITER //
 
 CREATE TRIGGER deduct_quantity_on_insert
@@ -127,6 +129,25 @@ BEGIN
     UPDATE retailer_inventory
     SET quantity = quantity - NEW.quantity
     WHERE id = NEW.inventory_id;
+
+END;
+
+//
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS after_inventory_insert;
+DELIMITER //
+
+CREATE TRIGGER after_inventory_insert
+    AFTER INSERT ON retailer_inventory
+    FOR EACH ROW
+BEGIN
+    -- Insert notifications for matching user subscriptions based on location or food preference
+    INSERT INTO notifications (user_id, inventory_id)
+    SELECT user_id, NEW.id
+    FROM user_subscription
+    WHERE location = NEW.location
+       OR NEW.item_name LIKE CONCAT('%', food_preference, '%');
 END;
 //
 

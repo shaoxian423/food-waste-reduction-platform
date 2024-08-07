@@ -93,6 +93,8 @@
             <input type="password" id="password" name="password" required>
             <label for="phone">Phone:</label>
             <input type="tel" id="phone" name="phone" required>
+            <label for="communicationMethod">Communication Method:</label>
+            <input type="tel" id="communicationMethod" name="communicationMethod" required>
             <label for="userType">User Type:</label>
             <select id="userType" name="userType">
                 <option value="Retailer">Retailer</option>

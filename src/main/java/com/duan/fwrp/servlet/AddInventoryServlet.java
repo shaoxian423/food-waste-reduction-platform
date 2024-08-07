@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import com.duan.fwrp.service.NotificationPollingTask;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -53,6 +54,7 @@ public class AddInventoryServlet extends HttpServlet {
 
         try {
             inventoryService.addItem(retailerId, itemName, quantity, expiryDate, price, discountRate, location, isSurplus, isForDonation);
+            NotificationPollingTask.pollNotifications();
             response.sendRedirect("retailerDashboard");
         } catch (SQLException e) {
             e.printStackTrace();

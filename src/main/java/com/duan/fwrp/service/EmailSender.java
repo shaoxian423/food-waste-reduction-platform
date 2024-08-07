@@ -10,9 +10,9 @@ public class EmailSender {
     private static final int PORT = 587; // Use 465 for SSL
     private static final String FROM = "fwrp4971@gmail.com"; // Replace with your Gmail address
     private static final String USERNAME = "fwrp4971@gmail.com"; // Replace with your Gmail address
-    private static final String PASSWORD = "fwrpPassword"; // Replace with your Gmail password or app password
+    private static final String PASSWORD = "okjixuonxjtnkpzj"; // Replace with your Gmail password or app password
 
-    public void sendEmail(String toEmail, String subject, String body) {
+    public static void sendEmail(String toEmail, String subject, String body) {
         // Gmail SMTP server configuration
         Properties properties = new Properties();
         properties.put("mail.smtp.host", HOST);

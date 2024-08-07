@@ -6,6 +6,7 @@ public class Users {
     private String email;
     private String password;
     private String phone;
+    private String communicationMethod;
     private String user_type; // Changed from userType
 
     // Getters and Setters
@@ -55,5 +56,12 @@ public class Users {
 
     public void setUserType(String userType) {
         this.user_type = userType; // Ensure this matches the database
+    }
+
+    public String getCommunicationMethod() {
+        return communicationMethod;
+    }
+    public void setCommunicationMethod(String communicationMethod) {
+        this.communicationMethod = communicationMethod;
     }
 }

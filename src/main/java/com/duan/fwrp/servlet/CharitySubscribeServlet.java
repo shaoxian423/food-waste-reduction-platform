@@ -10,8 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/consumerSubscribe")
-public class ConsumerSubscribeServlet extends HttpServlet {
+@WebServlet("/charitySubscribe")
+public class CharitySubscribeServlet extends HttpServlet{
     private UserSubscriptionService  userSubscriptionService;
 
     @Override
@@ -29,7 +29,7 @@ public class ConsumerSubscribeServlet extends HttpServlet {
 
         try {
             userSubscriptionService.addSubscription(userId, location, foodPreference);
-            response.sendRedirect("consumerDashboard");
+            response.sendRedirect("charityDashboard");
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendRedirect("retailerDashboard.jsp?error=Database error, please try again.");

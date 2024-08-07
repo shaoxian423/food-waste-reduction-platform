@@ -4,6 +4,10 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
 
+<!--    <listener>-->
+<!--      <listener-class>com.duan.fwrp.service.NotificationContextListener</listener-class>-->
+<!--    </listener>-->
+
   <display-name>Food Waste Reduction Platform</display-name>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
@@ -24,5 +28,7 @@
 <!--    <servlet-name>RetailerDashboardServlet</servlet-name>-->
 <!--    <url-pattern>/retailerDashboard</url-pattern>-->
 <!--  </servlet-mapping>-->
+
+
 
 </web-app>
