@@ -21,11 +21,7 @@ public class SurplusFoodListServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        try {
-            inventoryService = new RetailerInventoryService();
-        } catch (SQLException e) {
-            throw new ServletException("Failed to initialize RetailerInventoryService", e);
-        }
+        inventoryService = new RetailerInventoryService();
     }
 
     @Override

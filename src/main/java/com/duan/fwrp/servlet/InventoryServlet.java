@@ -18,11 +18,7 @@ public class InventoryServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        try {
-            inventoryService = new RetailerInventoryService();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        inventoryService = new RetailerInventoryService();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

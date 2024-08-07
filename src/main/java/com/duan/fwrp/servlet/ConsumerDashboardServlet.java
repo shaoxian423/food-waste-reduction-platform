@@ -20,11 +20,7 @@ public class ConsumerDashboardServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        try {
-            inventoryService = new RetailerInventoryService();
-        } catch (SQLException e) {
-            throw new ServletException("Failed to initialize RetailerInventoryService", e);
-        }
+        inventoryService = new RetailerInventoryService();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

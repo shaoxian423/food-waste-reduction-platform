@@ -66,45 +66,71 @@
     </div>
 </nav>
 <div class="container">
-    <h3>
-        <a href="consumerDashboard">All Surplus Food</a>
-        &nbsp;
-        <a href="purchasedFoodList">Purchased Food</a>
-    </h3>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Item Name</th>
-            <th>Quantity</th>
-            <th>Expiration Date</th>
-            <th>Discounted Price</th>
-            <th>Location</th>
-            <th>Purchase Quantity</th>
-            <th>Purchase</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="item" items="${surplusFoodList}">
-        <tr>
-            <td>${item.itemName}</td>
-            <td>${item.quantity}</td>
-            <td>${item.expiryDate}</td>
-            <td><c:out value="${item.price * item.discountRate}"/></td>
-            <td>${item.location}</td>
-            <td>
-                <form action="purchaseFood" method="post">
-                    <input type="hidden" name="inventoryId" value="${item.id}">
-                    <input type="hidden" name="userId" value="${id}">
-                    <input type="number" name="quantity" min="1" max="${item.quantity}" required>
-            </td>
-            <td>
-                <button type="submit" class="btn btn-link">Purchase</button>
-            </form>
-            </td>
-        </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+    <div class="card">
+        <h2 class="text-center">Subscribe Notification</h2>
+        <form action="subscribe" method="post">
+            <input type="hidden" name="userId" value="${id}" /> <!-- Hidden field to preserve the "id" parameter -->
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="communicationMethod">Communication Method:</label>
+                    <input type="text" class="form-control" id="communicationMethod" name="communicationMethod">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="location">Location:</label>
+                    <input type="text" class="form-control" id="location" name="location">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="foodPreference">Food Preference:</label>
+                    <input type="text" class="form-control" id="foodPreference" name="foodPreference">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success btn-block">Subscribe</button>
+        </form>
+    </div>
+    <br>
+    <div class="card">
+        <h3>
+            <a href="consumerDashboard">All Surplus Food</a>
+            &nbsp;
+            <a href="purchasedFoodList">Purchased Food</a>
+        </h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Expiration Date</th>
+                <th>Discounted Price</th>
+                <th>Location</th>
+                <th>Purchase Quantity</th>
+                <th>Purchase</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="item" items="${surplusFoodList}">
+            <tr>
+                <td>${item.itemName}</td>
+                <td>${item.quantity}</td>
+                <td>${item.expiryDate}</td>
+                <td><c:out value="${item.price * item.discountRate}"/></td>
+                <td>${item.location}</td>
+                <td>
+                    <form action="purchaseFood" method="post">
+                        <input type="hidden" name="inventoryId" value="${item.id}">
+                        <input type="hidden" name="userId" value="${id}">
+                        <input type="number" name="quantity" min="1" max="${item.quantity}" required>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-link">Purchase</button>
+                </form>
+                </td>
+            </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

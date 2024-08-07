@@ -9,7 +9,7 @@ import java.util.List;
 public class RetailerInventoryService {
     private RetailerInventoryDAO inventoryDAO;
 
-    public RetailerInventoryService() throws SQLException {
+    public RetailerInventoryService() {
         inventoryDAO = new RetailerInventoryDAO();
     }
 
