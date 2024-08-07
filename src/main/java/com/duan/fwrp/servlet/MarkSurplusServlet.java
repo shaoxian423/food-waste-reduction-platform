@@ -1,7 +1,6 @@
 package com.duan.fwrp.servlet;
 
 import com.duan.fwrp.dao.RetailerInventoryDAO;
-import com.duan.fwrp.dao.SurplusFoodDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

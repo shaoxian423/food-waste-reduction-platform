@@ -1,9 +1,5 @@
 package Test;
 
-import com.duan.fwrp.dao.SurplusFoodDAO;
-
-import java.sql.SQLException;
-
 //public class MarkAsSurplusTest {
 //    public static void main(String[] args) {
 //        SurplusFoodDAO surplusFoodDAO = new SurplusFoodDAO();

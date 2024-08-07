@@ -5,8 +5,8 @@
   Time: 1:50 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page import="java.util.List" %>
-<%@ page import="com.duan.fwrp.entity.SurplusFood" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,44 +20,57 @@
         .navbar a {
             color: white !important;
         }
+        body {
+            background-color: #f8f9fa;
+        }
         .container {
-            margin-top: 30px;
+            margin-top: 50px;
         }
-        .table {
-            margin-top: 20px;
+        .card {
+            padding: 20px;
+            border-radius: 10px;
         }
-        h1 {
-            margin-top: 20px;
-            color: #004d40;
+        table {
+            width: 100%;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #004d40;
+            color: white;
         }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg">
     <a class="navbar-brand" href="#">FWRP</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="index.jsp">About Us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="index.jsp">About FWRP</a>
+            </li>
+        </ul>
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">About Us</a>
+                <a class="nav-link" href="#">Welcome, ${username}!</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">About FWRP</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="register.jsp">Register</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="login.jsp">Login</a>
+                <a class="nav-link" href="login.jsp">Sign Out</a>
             </li>
         </ul>
     </div>
 </nav>
 <div class="container">
-    <h1>Welcome, Consumer!</h1>
-    <h2>Discounted Surplus Food</h2>
+    <h3>
+        <a href="consumerDashboard">All Surplus Food</a>
+        &nbsp;
+        <a href="purchasedFoodList">Purchased Food</a>
+    </h3>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -65,24 +78,31 @@
             <th>Quantity</th>
             <th>Expiration Date</th>
             <th>Discounted Price</th>
+            <th>Location</th>
+            <th>Purchase Quantity</th>
+            <th>Purchase</th>
         </tr>
         </thead>
         <tbody>
-        <%
-            List<SurplusFood> surplusFoodList = (List<SurplusFood>) request.getAttribute("surplusFoodList");
-            if (surplusFoodList != null) {
-                for (SurplusFood surplusFood : surplusFoodList) {
-        %>
+        <c:forEach var="item" items="${surplusFoodList}">
         <tr>
-            <td><%= surplusFood.getItemName() %></td>
-            <td><%= surplusFood.getQuantity() %></td>
-            <td><%= surplusFood.getExpiryDate() %></td>
-            <td><%= surplusFood.getDiscountedPrice() %></td>
+            <td>${item.itemName}</td>
+            <td>${item.quantity}</td>
+            <td>${item.expiryDate}</td>
+            <td><c:out value="${item.price * item.discountRate}"/></td>
+            <td>${item.location}</td>
+            <td>
+                <form action="purchaseFood" method="post">
+                    <input type="hidden" name="inventoryId" value="${item.id}">
+                    <input type="hidden" name="userId" value="${id}">
+                    <input type="number" name="quantity" min="1" max="${item.quantity}" required>
+            </td>
+            <td>
+                <button type="submit" class="btn btn-link">Purchase</button>
+            </form>
+            </td>
         </tr>
-        <%
-                }
-            }
-        %>
+        </c:forEach>
         </tbody>
     </table>
 </div>

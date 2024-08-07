@@ -23,7 +23,7 @@ public class TransactionDAO {
 
     public List<TransactionInventory> getAllClaimedFoodByUserId(int id) throws SQLException{
         List<TransactionInventory> transactionInventories = new ArrayList<TransactionInventory>();
-        String sql = "SELECT retailer_inventory.item_name, transaction.quantity, retailer_inventory.expiry_date, retailer_inventory.location, transaction.timestamp FROM transaction JOIN retailer_inventory ON(transaction.inventory_id =retailer_inventory.id) WHERE transaction.user_id=?";
+        String sql = "SELECT retailer_inventory.item_name, transaction.quantity, retailer_inventory.expiry_date, retailer_inventory.location, retailer_inventory.price, retailer_inventory.discount_rate, transaction.timestamp FROM transaction JOIN retailer_inventory ON(transaction.inventory_id =retailer_inventory.id) WHERE transaction.user_id=?";
         try (Connection connection = DatabaseUtil.getConnection()){
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
@@ -33,6 +33,8 @@ public class TransactionDAO {
                         rs.getString("item_name"),
                         rs.getInt("quantity"),
                         rs.getDate("expiry_date"),
+                        rs.getDouble("price"),
+                        rs.getDouble("discount_rate"),
                         rs.getString("location"),
                         rs.getTimestamp("timestamp")
                 );
