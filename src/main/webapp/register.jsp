@@ -37,6 +37,7 @@
         .main-content {
             text-align: center;
             margin-top: 100px;
+            margin-bottom: 3rem;
         }
         .main-content h1 {
             font-size: 50px;
@@ -86,15 +87,20 @@
     <div class="form-container">
         <form action="register" method="post">
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name" required style="margin: 1rem auto;
+            padding: 10px 0;">
             <label for="email">Email:</label>
-            <input type="text" id="email" name="email" required>
+            <input type="text" id="email" name="email" required style="margin: 1rem auto;
+            padding: 10px 0;">
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" required style="margin: 1rem auto;
+            padding: 10px 0;">
             <label for="phone">Phone:</label>
-            <input type="tel" id="phone" name="phone" required>
+            <input type="tel" id="phone" name="phone" required style="margin: 1rem auto;
+            padding: 10px 0;">
             <label for="communicationMethod">Communication Method:</label>
-            <input type="tel" id="communicationMethod" name="communicationMethod" required>
+            <input type="tel" id="communicationMethod" name="communicationMethod" required style="margin: 1rem auto;
+            padding: 10px 0;">
             <label for="userType">User Type:</label>
             <select id="userType" name="userType">
                 <option value="Retailer">Retailer</option>
