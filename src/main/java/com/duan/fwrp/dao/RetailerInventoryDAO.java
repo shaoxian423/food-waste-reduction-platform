@@ -43,7 +43,7 @@ public class RetailerInventoryDAO {
                         rs.getDouble("discount_rate"),
                         rs.getString("location"),
                         rs.getBoolean("is_surplus"),
-                        rs.getBoolean("for_donation")
+                        rs.getBoolean("is_for_donation")
                 );
                 inventories.add(inventory);
             }
