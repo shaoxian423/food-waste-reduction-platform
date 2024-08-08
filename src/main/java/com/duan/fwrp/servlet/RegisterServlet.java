@@ -13,6 +13,15 @@ import java.sql.SQLException;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
+
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
@@ -40,6 +49,7 @@ public class RegisterServlet extends HttpServlet {
         }
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }

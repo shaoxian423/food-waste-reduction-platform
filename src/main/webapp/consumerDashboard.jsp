@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -108,7 +109,7 @@
                 <td>${item.itemName}</td>
                 <td>${item.quantity}</td>
                 <td>${item.expiryDate}</td>
-                <td><c:out value="${item.price * item.discountRate}"/></td>
+                <td><fmt:formatNumber value="${item.price * item.discountRate}" type="number" minFractionDigits="2" maxFractionDigits="2"/></td>
                 <td>${item.location}</td>
                 <td>
                     <form action="purchaseFood" method="post">
